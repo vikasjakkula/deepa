@@ -103,26 +103,25 @@
 // }
 
 
-// import java.util.*;
-// class main
-// {
-//     public static void main(String[] args)
-//     {
-//         int n;
-//         Scanner sc = new Scanner(System.in);
-//         System.out.println("Enter a number: ");
-//         n = sc.nextInt();
-//         int result = fact(n);
-//         System.out.println("Factorial of "+ n + ": "+ result);
-//         sc.close();
-//     }
-//     static int fact(int n)
-//     {
-//         int result = 1;
-//         for(int i=1;i<=n;i++){
-//             result=result*i;
-//         }
-//         return result;
-//     }
-// }
-
+import java.util.*;
+class main
+{
+    public static void main(String[] args)
+    {
+        int n;
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter a number: ");
+        n = sc.nextInt();
+        int result = fact(n);
+        System.out.println("Factorial of "+ n + ": "+ result);
+        sc.close();
+    }
+    static int fact(int n)
+    {
+        int result = 1;
+        for(int i=1;i<=n;i++){
+            result=result*i;
+        }
+        return result;
+    }
+}
