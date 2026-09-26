@@ -78,9 +78,9 @@
             </tfoot>
         </table>
     </body> 
-</html>
+</html> -->
 
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -89,7 +89,7 @@
     <body>
         <form id="registration-form">
             <fieldset>
-            <legend>Personal Details</legend>
+            <legend>Personal Detailsssss</legend>
             <label for="name">Name</label>
             <input id="name" type="text" required>
             <label for="email">email</label>
@@ -108,27 +108,6 @@
             </fieldset>
         </form>
     </body>
-</html>
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>my first Js page</title>
-  </head>
-  <body>
-    <script>
-        // const name=prompt("Your name? ");
-        // const usd = Number(document.querySelector("#usd")).value;
-        // alert("welcome to my page");
-        // let name = prompt("Enter Your Name: ");
-        // console.log(name);
-        // document.write(name);
-        console.log("This runs when the page loads");
-        const name =prompt("Enter your name?");
-        console.log(name);
-    </script>
-  </body>
 </html> -->
 
 <!-- <!DOCTYPE html>
@@ -159,11 +138,10 @@
     </body>
 </html> -->
 
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
     <head>
         <title>CSS Basic Program 3</title>
-        <link rel="stylesheet" href="style.css">
     </head>
     <body>
         <h1 class="login-box">Login</h1>
@@ -177,4 +155,40 @@
             </form>
         </div>
     </body>
-</html>
+</html> -->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>getElementById Practice</title>
+</head>
+<body>
+
+  <!-- 1. HTML ELEMENTS WITH IDs -->
+  <h1 id="myTitle">Hello World</h1>
+  <input type="text" id="myInput" placeholder="Type something...">
+  <button id="myBtn">Click Me</button>
+
+  <!-- 2. JAVASCRIPT -->
+  <script>
+    // STEP 1: Select elements using getElementById (NO # SYMBOL HERE!)
+    const title = document.getElementById("myTitle");
+    const input = document.getElementById("myInput");
+    const btn = document.getElementById("myBtn");
+
+    // STEP 2: Attach an event listener to the button
+    btn.addEventListener("click", function () {
+      
+      // Read what user typed using .value
+      const userText = input.value;
+
+      // Change the heading text using .textContent
+      title.textContent = userText;
+
+      // Change heading style using .style
+      title.style.color = "blue";
+    });
+  </script>
+
+</body>
+</html> 
