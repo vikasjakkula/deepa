@@ -1,468 +1,638 @@
-# Java OOP — Complete Study Notes
+# Java OOP Exam Notes
 
-These notes cover every concept you need for **Notebooks 1–6**, plus a full worked solution for each notebook. Every solution below was compiled and run; the outputs shown are the real outputs.
+Exam-ready notes for Java Object-Oriented Programming. They cover every concept, a step-by-step method for each question type, and complete verified solutions for Notebooks 1 to 6.
 
-> **How to use:** read Part 1 once so you understand the ideas. Then work through Part 2 one notebook at a time. Try each question yourself before you look at the answer. Just before the exam, revise Part 3 (traps) and Part 4 (rapid-fire).
+**How to use these notes**
+1. Read **Part 0** and **Part 1** first. They teach you how to recognise a question type and answer it.
+2. Revise **Part 2** (concepts) topic by topic.
+3. For each notebook in **Part 3**, try the question yourself first. Then open the hidden solution.
+4. Do the **practice question** in Part 4 without looking.
+5. The night before the exam, read **Part 5** (traps) and **Part 6** (revision).
 
----
-
-## Contents
-
-**Part 1: Concepts**
-1. [Class & Object](#1-class--object)
-2. [Instance Variables & Defaults](#2-instance-variables--defaults)
-3. [`static`: variable, method, block](#3-static--variable-method-block)
-4. [Instance Initializer Block](#4-instance-initializer-block)
-5. [Constructors, `this`, Overloading, Chaining](#5-constructors)
-6. [The Shadowing Bug](#6-the-shadowing-bug)
-7. [Encapsulation](#7-encapsulation)
-8. [Access Modifiers & Packages](#8-access-modifiers--packages)
-9. [Inheritance & `super`](#9-inheritance--super)
-10. [Overriding vs Overloading](#10-method-overriding-vs-overloading)
-11. [Abstract Class & Abstract Method](#11-abstract-class--abstract-method)
-12. [`final`: variable, method, class](#12-final--variable-method-class)
-13. [Runtime Polymorphism](#13-runtime-polymorphism)
-14. [Requirement → Keyword Cheat Sheet](#14-requirement--keyword-cheat-sheet)
-15. [Constructor Design Problem (Factory Methods)](#15-constructor-design-problem-factory-methods)
-
-**Part 2: Notebook Solutions**
-- [Notebook 1: SecureBank (Banking System)](#notebook-1--securebank-banking-system)
-- [Notebook 2: Online Course Management](#notebook-2--online-course-management)
-- [Notebook 3: AutoTest Labs (Vehicle Testing)](#notebook-3--autotest-labs-vehicle-testing)
-- [Notebook 4: Online Shopping (Product/Electronics + Order/PremiumOrder)](#notebook-4--online-shopping)
-- [Notebook 5: Bank Account Management](#notebook-5--bank-account-management)
-- [Notebook 6: Hospital Patient Management](#notebook-6--hospital-patient-management)
-
-**Part 3:** [Coding Traps](#part-3--coding-traps)
-**Part 4:** [Rapid-Fire Revision + Viva Questions](#part-4--rapid-fire-revision--viva-questions)
+> [!NOTE]
+> Every program here was compiled and run. All outputs shown are real outputs.
 
 ---
 
-# PART 1 — CONCEPTS
+## Table of Contents
 
-## 1. Class & Object
+- [Part 0 - Quick Overview](#part-0---quick-overview)
+  - [Four Pillars of OOP](#four-pillars-of-oop)
+  - [Requirement to Keyword Cheat Sheet](#requirement-to-keyword-cheat-sheet)
+- [Part 1 - Exam Playbook](#part-1---exam-playbook)
+  - [Type A - Design Scenario](#type-a---design-scenario)
+  - [Type B - Requirements to Modifiers](#type-b---requirements-to-modifiers)
+  - [Type C - Constructor Overloading with super](#type-c---constructor-overloading-with-super)
+  - [Model Answers for Theory Questions](#model-answers-for-theory-questions)
+  - [Likely Twists](#likely-twists)
+- [Part 2 - Concepts](#part-2---concepts)
+  - [1. Class and Object](#1-class-and-object)
+  - [2. Instance Variables and Defaults](#2-instance-variables-and-defaults)
+  - [3. Static](#3-static)
+  - [4. Initializer Blocks and Creation Order](#4-initializer-blocks-and-creation-order)
+  - [5. Constructors and this](#5-constructors-and-this)
+  - [6. The Shadowing Bug](#6-the-shadowing-bug)
+  - [7. Encapsulation](#7-encapsulation)
+  - [8. Access Modifiers and Packages](#8-access-modifiers-and-packages)
+  - [9. Inheritance and super](#9-inheritance-and-super)
+  - [10. Overriding vs Overloading](#10-overriding-vs-overloading)
+  - [11. Abstract Class and Abstract Method](#11-abstract-class-and-abstract-method)
+  - [12. Final](#12-final)
+  - [13. Polymorphism and Casting](#13-polymorphism-and-casting)
+  - [14. Abstract Class vs Interface](#14-abstract-class-vs-interface)
+  - [15. Constructor Design Problem](#15-constructor-design-problem)
+- [Part 3 - Notebook Solutions](#part-3---notebook-solutions)
+  - [Notebook 1 - SecureBank](#notebook-1---securebank)
+  - [Notebook 2 - Course Management](#notebook-2---course-management)
+  - [Notebook 3 - AutoTest Labs](#notebook-3---autotest-labs)
+  - [Notebook 4 Q1 - Product and Electronics](#notebook-4-q1---product-and-electronics)
+  - [Notebook 4 Q2 - Order and PremiumOrder](#notebook-4-q2---order-and-premiumorder)
+  - [Notebook 5 - Bank Account](#notebook-5---bank-account)
+  - [Notebook 6 - Hospital Patients](#notebook-6---hospital-patients)
+- [Part 4 - Practice Question](#part-4---practice-question)
+- [Part 5 - Traps and Compiler Errors](#part-5---traps-and-compiler-errors)
+- [Part 6 - Revision and Viva](#part-6---revision-and-viva)
 
-A **class** is a blueprint and takes no memory. An **object** is a real thing made from the class with `new`, and it does take memory.
+---
+
+# Part 0 - Quick Overview
+
+## Four Pillars of OOP
+
+| Pillar | Meaning | Java tools |
+|---|---|---|
+| Encapsulation | hide data, control access | `private` fields + getters/setters |
+| Inheritance | child reuses parent | `extends`, `super(...)` |
+| Polymorphism | one call, many behaviours | overloading, overriding |
+| Abstraction | show *what*, hide *how* | `abstract` class/method, interface |
+
+Where they appear in the notebooks:
+- **Encapsulation:** private account number (NB5), private medical record + `updateMedicalRecord()` (NB6)
+- **Inheritance:** every child class (`SavingsAccount extends Account`, `Electronics extends Product`)
+- **Polymorphism:** the `Account[]` / `Vehicle[]` loops (NB1, NB3), constructor overloading (NB4)
+- **Abstraction:** `abstract calculateInterest()`, `abstract accelerate()`, `abstract calculateBill()`
+
+## Requirement to Keyword Cheat Sheet
+
+This is the most important table in the notes. Every Type A and Type B question is built from these phrases.
+
+| If the question says... | Write |
+|---|---|
+| "should not create a general X object" / "base class only" | `abstract class X` |
+| "declare the operation but no implementation" / "each type calculates differently" | `abstract` method + `@Override` in each child |
+| "must never change once assigned" | `final` variable |
+| "children inherit it but cannot override it" | `final` method |
+| "no one can extend / inherit further" | `final class` |
+| "common to all" / "stored only once" / "belongs to the class" | `static` variable |
+| "call without creating an object" / "call using class name" | `static` method |
+| "count how many objects were created" | `static int count` + `count++` in the **parent** constructor |
+| "not directly accessible from outside the class" | `private` + getter / update method |
+| "class, subclasses and same package" | `protected` |
+| "only classes in the same package" | default (no keyword) |
+| "same reference works with different objects" | `Parent p = new Child();` |
+| "initialize parent data from child" | `super(...)` |
+| "reuse another constructor of same class" | `this(...)` |
+| "constant shared by all" | `static final` |
+
+---
+
+# Part 1 - Exam Playbook
+
+Every question in the notebooks is one of **three types**. Spot the type first, then follow its recipe.
+
+| Type | Looks like | Notebooks |
+|---|---|---|
+| A | long scenario with Parts A-E, skeleton to complete | 1, 3 |
+| B | numbered requirements, "choose modifiers", expected output | 2, 5, 6 |
+| C | overloaded constructors + `super`, billing maths, sample output | 4 (Q1, Q2) |
+
+## Type A - Design Scenario
+
+**How to spot it:** "should not be possible to create a general X", "must never change", "cannot override", "count objects", "no one may extend", and then Part A (complete the class), B (children), C (test), D (predict errors), E (polymorphism), Concept Identification and a Challenge.
+
+**Steps**
+1. **Part A:** fix the skeleton with 6 edits:
+   - `abstract` on the class
+   - `final` on the ID field
+   - `static` on the counter, plus `count++` in the constructor
+   - `final` on the standard method (KYC / start)
+   - `abstract` on the method with no body (end it with `;`)
+   - `static` on `getCount()`
+2. **Part B:** each child uses `extends Parent`, adds its own fields, has a constructor that calls `super(id, ...)` on its first line, and uses `@Override` on the abstract method (and on any method whose behaviour changes, e.g. `withdraw`).
+3. **Final class:** write the config/policy class as `final class X { fields }`.
+4. **Part C:** create the objects exactly as given, call the methods in the order asked, print, and finish with `Parent.getCount();`.
+5. **Part D:** answer each item with: **compiles? → exact error → why the design wants that** (see the [model answers](#model-answers-for-theory-questions)).
+6. **Part E:** `Parent p = new Child(...)`, then an array and a for-each loop. Say "the child's overridden method runs, because it is chosen at run time from the actual object".
+7. **Concept identification:** copy the 10-row table from Notebook 1 and change the names.
+8. **Challenge:** add a new `class Y extends Parent` with `super(...)` and `@Override`. Don't touch the parent. The counter already counts it.
+
+**Skeleton**
+```java
+abstract class Parent {
+    final int id;
+    String name;
+    static int count = 0;
+
+    Parent(int id, String name) {
+        this.id = id;
+        this.name = name;
+        count++;
+    }
+
+    final void standardProcedure() {
+        System.out.println("Standard check done");
+    }
+
+    abstract double calculate();
+
+    void displayDetails() {
+        System.out.println("ID: " + id);
+        System.out.println("Name: " + name);
+    }
+
+    static void getCount() {
+        System.out.println("Total Created: " + count);
+    }
+}
+
+class ChildOne extends Parent {
+    double extra;
+
+    ChildOne(int id, String name, double extra) {
+        super(id, name);
+        this.extra = extra;
+    }
+
+    @Override
+    double calculate() {
+        return extra * 0.04;
+    }
+}
+
+final class Config {
+    int limit = 100;
+}
+```
+
+**Mistakes that lose marks**
+- Forgetting `static` on the counter, so it always prints 1.
+- Putting `count++` in each child instead of the parent, so the Challenge class isn't counted.
+- Missing `super(...)` in the child, which gives the error `constructor Parent in class Parent cannot be applied to given types`.
+- An abstract method written with `{ }`. It must end with `;`.
+- Not noticing that Part E objects are accelerated/processed **twice** (once individually, once in the loop).
+
+## Type B - Requirements to Modifiers
+
+**How to spot it:** a short numbered list like "must not be changed", "common to all", "not accessible from outside", "subclasses and same package", "should not be extended", then "select appropriate access specifiers and non-access modifiers" and an expected output.
+
+**Steps**
+1. Write a **table**: requirement number → declaration. Examiners love this, so put it at the top of your answer.
+2. Map each requirement with the [cheat sheet](#requirement-to-keyword-cheat-sheet).
+3. If a package is mentioned, add `package name;` as the first line.
+4. Write the abstract parent, then two children, then `main`.
+5. Make the output match the expected output **exactly**, including labels and spacing.
+6. Add a comment with the requirement number next to each declaration, e.g. `// 3. private: confidential`.
+
+**Watch for contradictions.** If one class must be both "abstract" and "not inherited", make an **abstract parent** plus a **final child**. See [Notebook 2](#notebook-2---course-management).
+
+**Skeleton**
+```java
+package company;
+
+abstract class Base {
+    private final int id;                  // never changes
+    private static final String ORG = "X"; // one copy, constant
+    private String secret;                 // hidden
+    protected String category;             // class+sub+package
+    int room;                              // package only
+
+    Base(int id, String secret) {
+        this.id = id;
+        this.secret = secret;
+    }
+
+    public static void displayOrg() {      // no object needed
+        System.out.println("Org: " + ORG);
+    }
+
+    public void updateSecret(String s) {   // controlled change
+        if (s != null && !s.isEmpty()) this.secret = s;
+    }
+
+    public abstract double calculate();    // each type differs
+}
+
+final class TypeOne extends Base {         // cannot be extended
+    TypeOne(int id, String secret) { super(id, secret); }
+
+    @Override
+    public double calculate() { return 500; }
+}
+```
+
+## Type C - Constructor Overloading with super
+
+**How to spot it:** "overloaded constructors" in both parent and child, "use super(...)", "default values", "do not use overriding / arrays / abstract", billing or stock maths, and a sample output.
+
+**Steps**
+1. **Parent:** write the longest constructor first (it does all the `this.x = x`). The shorter one calls `this(..., default)`.
+2. **Child:** every constructor starts with `super(...)` (the short or long parent version), then sets child fields and defaults.
+3. **Methods:** one method per formula, returning `double`. Reuse methods (`calculateFinal()` calls `calculateTotal()` and `calculateDiscount()`).
+4. **No overriding:** give the child **new method names** (`showElectronicsDetails()`) and call the inherited `showProduct()` inside them.
+5. **Order of actions:** check first, then calculate, then print, then update state.
+6. Work out the sample output by hand and compare it line by line.
+
+**Skeleton**
+```java
+class Parent {
+    String name; double price; int stock;
+
+    Parent(String name, double price) {
+        this(name, price, 10);            // default
+    }
+
+    Parent(String name, double price, int stock) {
+        this.name = name; this.price = price;
+        this.stock = stock;
+    }
+}
+
+class Child extends Parent {
+    String brand; double discount;
+
+    Child(String name, double price, String brand) {
+        super(name, price);               // stock = 10
+        this.brand = brand;
+        this.discount = 5;                // default
+    }
+
+    Child(String name, double price, int stock,
+          String brand, double discount) {
+        super(name, price, stock);
+        this.brand = brand;
+        this.discount = discount;
+    }
+}
+```
+
+**Mistakes that lose marks**
+- Using `@Override` (or a method with the parent's name) when the question forbids overriding.
+- Integer maths: `5 / 100 * amount` = 0. Write `amount * 5 / 100`.
+- Updating stock or amount *before* printing the bill.
+- Forgetting to re-check a condition after changing state (e.g. free delivery after `addPurchase`).
+
+## Model Answers for Theory Questions
+
+Use these sentence patterns and change the names to fit the question.
+
+**"Why should `new Parent(...)` fail?"**
+> It does not compile: `Parent is abstract; cannot be instantiated`. Parent is only a general idea. Its abstract method has no body, so only concrete child objects should exist.
+
+**"Why should `obj.id = 999;` be prevented?"**
+> It does not compile: `cannot assign a value to final variable id`. The ID identifies the object for its whole lifetime. Changing it would break records, so it is `final` and assigned once in the constructor.
+
+**"Should the child be allowed to override `start()` / `verifyKYC()`?"**
+> No. `start() in Child cannot override start() in Parent; overridden method is final`. It is a mandatory standard procedure, so it is `final`. Children inherit and use it but cannot replace it.
+
+**"Should `class X extends Config {}` compile?"**
+> No: `cannot inherit from final Config`. Config is a `final` class, so it can be used (`new Config()` works) but not extended. This stops anyone from changing its values or behaviour through a subclass.
+
+**"Why can `Parent.getCount()` be called using the class name?"**
+> Because it is `static`. A static method belongs to the class, not to an object, and it reads the static counter, which also belongs to the class. So no object is needed. This works even though the class is abstract.
+
+**"Which implementation of `accelerate()` executes?"**
+> The child's version: PetrolCar adds 10, ElectricCar adds 20, Bike adds 5. The reference type is `Vehicle`, but Java picks the overridden method at run time from the **actual object**. This is runtime polymorphism (dynamic method dispatch).
+
+**"Why can the same Parent reference work with different objects?"**
+> Every child *is a* Parent (inheritance), so a Parent reference can hold any child object (upcasting). Calls to overridden methods run the child's version. So one loop handles all types, including types added later.
+
+**"Why can't a class be both abstract and final?"**
+> `abstract` means "must be extended to be used"; `final` means "cannot be extended". They contradict each other, so the compiler says `illegal combination of modifiers: abstract and final`.
+
+**"Explain each concept used" (Concept Identification)**
+> Name the concept, point to the exact line in your program, and give one sentence of purpose. Example: *Static variable: `static int accountCount`. One counter shared by all accounts, so it counts every object created.*
+
+## Likely Twists
+
+| Twist | How to handle |
+|---|---|
+| "Use an interface" instead of abstract class | `interface X { double calc(); }`, `class Y implements X`, the method must be `public` in Y |
+| Private ID but must display it | `private final int id;` + `public int getId()` |
+| Call a child-only method on a parent reference | `if (v instanceof PetrolCar) ((PetrolCar) v).refuel(5);` |
+| Counter per child type | a separate `static int` in each child |
+| Multilevel (`C extends B extends A`) | each constructor calls `super(...)`; creation runs A, then B, then C |
+| Validation required | check inside the setter/method: `if (amount <= 0) return;` |
+| Print object directly | override `public String toString()` |
+| Subclass in another package needs a field | make it `protected`, not default |
+
+---
+
+# Part 2 - Concepts
+
+Each topic follows the same pattern: what it is, an example, the rules, and the exam tip.
+
+## 1. Class and Object
+
+A **class** is a blueprint and takes no memory for objects. An **object** is an instance made with `new`, and it lives in the **heap**.
 
 ```java
 class Employee { int id; String name; }
 
-Employee e1 = new Employee();
+Employee e1 = new Employee();   // e1 = reference (address)
+Employee e2 = e1;               // 2 references, 1 object
 ```
+- Local variables and references live on the **stack**. Objects live on the **heap**.
+- A reference with no object is `null`. Calling a method on it throws a `NullPointerException`.
+- **is-a** = inheritance (`Car extends Vehicle`). **has-a** = a field (`Car` has an `Engine`).
 
-- The object lives in the **heap**. `e1` is a **reference**: it holds the object's address.
-- `Employee b = e1;` gives you **2 references but only 1 object**. A change made through `b` is visible through `e1`.
-- A reference that was never given an object with `new` is `null`. Calling anything on it throws a `NullPointerException`.
-
----
-
-## 2. Instance Variables & Defaults
-
-An instance variable is a field of the class. There is **one copy per object**, and Java gives it a default value automatically.
+## 2. Instance Variables and Defaults
 
 | Type | Default |
 |---|---|
-| `int`, `long`, `short`, `byte` | `0` |
-| `double`, `float` | `0.0` |
-| `char` | `'\u0000'` (blank) |
+| `int long short byte` | `0` |
+| `double float` | `0.0` |
+| `char` | `'\u0000'` |
 | `boolean` | `false` |
-| `String` / any object | `null` |
+| objects / `String` | `null` |
 
 | | Instance variable | Local variable |
 |---|---|---|
-| Declared | in the class | inside a method/constructor |
-| Default value | **yes** | **no** → compile error if used unassigned |
-| Memory | heap (inside the object) | stack |
+| Declared in | class | method / constructor |
+| Default value | yes | **no** (compile error if used unassigned) |
+| Memory | heap | stack |
 
----
+## 3. Static
 
-## 3. `static`: variable, method, block
+`static` means the member belongs to the **class**: one copy shared by all objects.
 
-`static` means the member **belongs to the class, not to each object**.
-
-### Static variable: one copy shared by all objects
-```java
-class Vehicle {
-    static int vehicleCount = 0;   // ONE counter for the whole class
-    Vehicle() { vehicleCount++; }  // every new object adds 1
-}
-```
-If you leave out `static`, every object gets its own counter that starts at 0 and only ever reaches 1. That's why the notebooks say *"the counter should belong to the class rather than to individual objects"*.
-
-### Static method: call it with the class name, no object needed
-```java
-static void getVehicleCount() {
-    System.out.println("Total Vehicles Created: " + vehicleCount);
-}
-
-Vehicle.getVehicleCount();   // no object required
-```
-**Rules:**
-- A static method **cannot** use instance variables or `this` directly, because there's no object. Error: `non-static variable x cannot be referenced from a static context`.
-- It **can** use static variables and other static methods.
-- `main` is static, which is why you have to create objects inside `main` before you can use their fields.
-
-### Static block: runs once, when the class is first loaded
-```java
-static { System.out.println("Class loaded"); }
-```
-
-| | `static { }` | `{ }` (instance block) |
+| | static | instance |
 |---|---|---|
-| Runs | once, when the class loads | every time an object is created |
-| Can use instance vars / `this` | ❌ | ✅ |
-
-### Why `Account.getAccountCount()` works (a common exam question)
-The method is `static`, so it belongs to the class itself and is loaded together with it. Calling it doesn't need an object, and the counter it reads is also `static` (one shared copy). So the class name is enough.
-
----
-
-## 4. Instance Initializer Block
-
-An instance initializer is an unnamed `{ }` block inside the class body.
+| Copies | one per class | one per object |
+| Access | `ClassName.member` | `object.member` |
+| Created | when the class loads | on `new` |
+| Can use `this` | no | yes |
 
 ```java
-class Employee {
-    int id;
-    { id = 100; }          // instance initializer
-    Employee() { }
+static int count = 0;              // shared counter
+static void getCount() {           // Parent.getCount()
+    System.out.println("Total: " + count);
 }
 ```
-1. It runs **once per object**, for every object.
-2. Order: **default values → field initializers and `{ }` blocks (top to bottom) → constructor body.**
-3. It runs **before the constructor body**, so the constructor can overwrite what it set.
-4. You can have several blocks. They run in the order they're written.
-5. It has no name, no return type and no parameters.
-6. It can use `this` and instance variables.
-7. With `this(...)` chaining it still runs **only once** per object.
+**Rules**
+- A static method cannot use instance variables or `this` directly: `non-static variable x cannot be referenced from a static context`.
+- `main` is static. That's why you create objects inside `main` before you use their fields.
+- Static methods are **not overridden**, they are **hidden**. With `A r = new B(); r.s();` it's A's static `s()` that runs, because the reference type decides.
+- `static final` = a constant (`static final String BANK = "ABC";`).
 
-**Use it for** code that every constructor needs. You write it once instead of repeating it in each constructor.
+> [!TIP]
+> "Stored once / common to all" → static **variable**. "Without creating an object" → static **method**.
 
+## 4. Initializer Blocks and Creation Order
+
+- `static { }` runs **once**, when the class is first loaded.
+- `{ }` (the instance block) runs **every time** an object is created, before the constructor body.
+
+**Full creation order for `new Child()`** (verified output):
+```text
+1 Parent static block      <- first object only
+2 Child static block       <- first object only
+3 Parent instance block
+4 Parent constructor
+5 Child instance block
+6 Child constructor
+```
+For a second `new Child()`, only steps 3-6 run.
+
+**Inside one class:** default values → field initializers and `{ }` blocks (top to bottom) → constructor body.
 ```java
-int x = 1;      // step 1
-{ x = 2; }      // step 2
-int y = x + 5;  // step 3  -> y = 7
-A() { x = 3; }  // step 4 (constructor body runs last)
-// final values: x = 3, y = 7
+int x = 1;      // 1
+{ x = 2; }      // 2
+int y = x + 5;  // 3  -> y = 7
+A() { x = 3; }  // 4  -> final x = 3, y = 7
 ```
 
----
+## 5. Constructors and this
 
-## 5. Constructors
+**Rules**
+1. The name is the same as the class.
+2. **No return type**. `void A(){}` is a method, not a constructor.
+3. It runs automatically on `new`.
+4. It can be overloaded and can be `private`. It **cannot** be `static`, `final` or `abstract`.
+5. The compiler gives a default no-arg constructor **only if you wrote none**.
+6. Constructors are **not inherited**.
 
-### Rules
-1. The name is the same as the class name.
-2. **No return type**, not even `void`.
-3. It runs automatically when you call `new`.
-4. It can be overloaded and it can be `private`. It **cannot** be `static`, `final` or `abstract`.
-5. `void Employee(){}` is a **method**, not a constructor.
+**Types:** no-arg, parameterized, copy (`A(A o) { this.id = o.id; }`).
 
-### Default constructor
-The compiler adds a no-arg constructor **only if you wrote zero constructors**. As soon as you write any constructor, the free one is gone. If you still need `new X()`, you have to write the no-arg constructor yourself.
+**`this` has three uses**
+- `this.id = id;`: the field vs the parameter
+- `this(...)`: call another constructor of the same class (it must be the first line)
+- pass or return the current object: `return this;`
 
-### Types
-- **No-arg:** `Employee() { }`
-- **Parameterized:** `Employee(int id, String name) { ... }`
-- **Copy:** `Employee(Employee o) { this.id = o.id; this.name = o.name; }`
+**Overloading resolution:** Java looks at the number, types and order of the parameters. **Names are ignored.** Matches are tried in this order: exact → widening (`int→long→double`) → boxing → varargs. `new Patient(301, 5000)` picks `(int,int)` over `(int,double)`.
 
-### `this`
-`this` refers to the current object.
-```java
-Employee(int id, String name) {
-    this.id = id;      // left side = my field, right side = the parameter
-    this.name = name;
-}
-```
-You need it here because the parameter has the same name as the field, and inside the constructor **the parameter wins** (this is called shadowing). `this` cannot be used in a `static` method.
-
-### Constructor overloading
-Java picks the constructor by its **signature: the number, types and order of the parameters**. Parameter **names and meaning are ignored**.
-```java
-Employee(int id, String name)         // OK
-Employee(int id, String department)   // ERROR: already defined, same (int, String)
-```
-Java tries matches in this order: **exact match → widening (int→long→double) → boxing → varargs**.
-So `new Patient(301, 5000)` picks `(int,int)` over `(int,double)`. Write `5000.0` if you want the double version.
-
-### Chaining with `this(...)` (same class)
-- It must be the **first statement** in the constructor.
-- Only one `this(...)` call per constructor.
-- No cycles, or you get a `recursive constructor invocation` error.
-
-```java
-Product(String name, double price) {
-    this(name, price, 10);        // reuse the bigger constructor, default stock = 10
-}
-Product(String name, double price, int stock) {
-    this.productName = name; this.price = price; this.stock = stock;
-}
+**Chaining output order:** the deepest constructor finishes first.
+```text
+A() -> this(0) -> this(0,"x")   prints: C  B  A
 ```
 
-**Output order of chained constructors: the deepest one prints first (the reverse of the call order).**
-```
-Product() -> this(0,"Unknown") -> this(0,"Unknown",0)
-new Product()  prints  C  B  A
-```
-The called constructor finishes its whole body before control comes back, so your own `println` runs **last**.
-
-> ⚠️ Classic exams (Java 8–21) treat a statement before `this(...)`/`super(...)` as a compile error. Java 25 relaxes this a little, but always put `this(...)`/`super(...)` on the first line.
-
----
+> [!WARNING]
+> `this(...)` / `super(...)` must be the **first statement** (Java 8-21). Java 25 allows some statements before them, but the exam expects line 1.
 
 ## 6. The Shadowing Bug
 
-This one comes up again and again.
-
 ```java
-Employee(int employeeId, String name) {
-    employeeId = employeeId;   // WRONG: prints 0 and null
+Employee(int id, String name) {
+    id = id;        // WRONG: prints 0 and null
     name = name;
 }
 ```
-- **Why it compiles:** the parameter shadows the field, so both sides of `employeeId = employeeId` mean the *parameter*. Assigning a variable to itself is legal. It's a logic error, not a syntax error.
-- **Why the values aren't stored:** the field is never touched, so it keeps its default (`0`, `null`).
-- **Fix:** `this.employeeId = employeeId;`
-- In the BankAccount version it also compiles because an `int` argument **widens** to `long`/`double`.
-
----
+- **It compiles** because the parameter hides the field, so this assigns the parameter to itself.
+- **The field keeps its default** (`0`, `null`).
+- **Fix:** `this.id = id;`
 
 ## 7. Encapsulation
 
-Encapsulation means making fields `private` and giving controlled access through `public` getters and setters.
-
+Encapsulation means `private` fields plus `public` getters/setters that **validate**.
 ```java
 private double salary;
-
 public double getSalary() { return salary; }
-
 public void setSalary(double salary) {
-    if (salary < 0) return;        // validation
+    if (salary < 0) return;      // validation
     this.salary = salary;
 }
 ```
-- The getter for a boolean field is named `isX()`, for example `isPermanent()`.
-- **Why `private`?** Without it, anyone can write `e.salary = -50000;` and nothing stops them. A setter lets you **validate** the value first.
-- **Benefits:** data hiding, validation, the internals can change without breaking other code, and you get read-only fields (getter only, no setter).
-- Notebook 6's `updateMedicalRecord()` is exactly this: the record is `private`, and the **only** way to change it is through a method that you control.
+- The getter for a boolean is `isX()`.
+- Read-only = getter only. Controlled update = a method like `updateMedicalRecord()`.
+- **Why:** without it, anyone can write `e.salary = -500;`.
 
----
+## 8. Access Modifiers and Packages
 
-## 8. Access Modifiers & Packages
-
-| Modifier | Same class | Same package | Subclass (other package) | Anywhere |
+| Modifier | Class | Package | Subclass (other pkg) | World |
 |---|:-:|:-:|:-:|:-:|
 | `private` | ✅ | ❌ | ❌ | ❌ |
-| *(default — no keyword)* | ✅ | ✅ | ❌ | ❌ |
+| default | ✅ | ✅ | ❌ | ❌ |
 | `protected` | ✅ | ✅ | ✅ | ❌ |
 | `public` | ✅ | ✅ | ✅ | ✅ |
 
-**How to read the requirement wording:**
-- *"not directly accessible from outside the class"* → **`private`** (and give a getter or update method)
-- *"accessible only to classes within the same package"* → **default** (write no modifier)
-- *"accessible within the class, its subclasses, and the same package"* → **`protected`**
-- *"accessible from anywhere"* → **`public`**
+Verified errors when crossing package `hospital` → `billing`:
+- default field: `roomNumber is not public in Patient; cannot be accessed from outside package`
+- protected field from a **non-subclass**: `patientCategory has protected access in Patient`
+- A subclass in another package **can** use a protected field through inheritance.
 
 **Packages**
-```java
-package hospital;          // must be the FIRST line of the file
-```
-- A package is a folder that groups related classes. Default access means "visible to classes in this folder only".
-- To compile and run: `javac -d . HospitalDemo.java` then `java hospital.HospitalDemo`.
-- Only **one `public` class per file**, and the file name must match it.
-- Class-level modifiers: a top-level class can only be `public` or default (never `private` or `protected`).
+- `package hospital;` must be the **first line**.
+- Compile with `javac -d . File.java`, run with `java hospital.MainClass`.
+- One `public` class per file, and the file name must match it.
+- A top-level class can only be `public` or default.
 
----
-
-## 9. Inheritance & `super`
+## 9. Inheritance and super
 
 ```java
-class Electronics extends Product { ... }
+class Electronics extends Product { }   // Electronics is-a Product
 ```
-- The child gets all the **non-private** fields and methods of the parent. This is an **"is-a"** relationship: Electronics *is a* Product.
-- Java classes support **single inheritance only**: one `extends` per class.
-- **Constructors are NOT inherited.** The child has to write its own and call the parent's with `super(...)`.
+- The child gets the **non-private** fields and methods.
+- **Types supported with classes:** single, multilevel (`C→B→A`), hierarchical (`B→A`, `C→A`).
+- **Multiple inheritance with classes is not allowed** (`class C extends A, B` is an error) because of the *diamond problem*: which parent's method would win? Interfaces solve this.
 
-### `super(...)`
-```java
-Electronics(String name, double price, String brand) {
-    super(name, price);          // runs Product(String,double) FIRST
-    this.brand = brand;
-    this.warrantyYears = 1;      // default values
-    this.discountPercentage = 5;
-}
-```
-- It must be the **first statement**. You can have `this(...)` or `super(...)`, never both.
-- If you don't write it, Java inserts `super()` (no-arg) for you. If the parent has no no-arg constructor, you get a compile error. That's why every child in the notebooks calls `super(id, brand, model)` explicitly.
-- **Construction order: the parent is always built first, then the child.**
-- `super.method()` calls the parent's version of a method, which is useful inside an override.
+**`super` has three uses**
+- `super(...)`: call the parent constructor (must be the first line)
+- `super.method()`: call the parent's version of an overridden method
+- `super.field`: a parent field hidden by a child field
 
-### Static counter + inheritance
-Put `count++` in the **parent constructor**. Every child constructor calls `super(...)`, so every object of every child type (SavingsAccount, StudentAccount, FlyingCar…) is counted automatically. That's why the "Challenge" classes need no change to the parent.
+**Rules**
+- If you don't write `super(...)`, Java inserts `super()`. If the parent has no no-arg constructor, you get the compile error `constructor Parent in class Parent cannot be applied to given types`.
+- You can use `this(...)` or `super(...)` in a constructor, not both.
+- The parent part is always built **before** the child part.
 
----
+> [!TIP]
+> Put the static counter's `count++` in the **parent** constructor. Every child passes through `super(...)`, so new child types are counted automatically.
 
-## 10. Method Overriding vs Overloading
+## 10. Overriding vs Overloading
 
 | | Overloading | Overriding |
 |---|---|---|
-| Where | same class (or inherited) | child class redefines a parent method |
-| Name | same | same |
-| Parameters | **must differ** | **must be the same** |
-| Return type | anything | same (or a subtype) |
-| Decided at | **compile time** | **run time** (by the actual object) |
-| Also called | static polymorphism | dynamic / runtime polymorphism |
+| Parameters | must differ | must be the same |
+| Where | same class | child class |
+| Decided | compile time | run time |
+| Also called | static polymorphism | dynamic polymorphism |
 
-```java
-@Override
-double calculateInterest() { return balance * 0.04; }
-```
-- `@Override` asks the compiler to check that you really are overriding. If you misspell the method name, you get a compile error instead of a silent new method.
-- **You cannot override** `final` methods, `static` methods (those are hidden, not overridden), `private` methods (they're invisible to the child) or constructors.
-- An override **cannot reduce visibility**. If the parent method is `public`, the child's must be `public` too.
-- Notebook 4 says *"do not use overriding"*, so give the child **new method names** (`showElectronicsDetails()`, `showPremiumOrder()`) and call the inherited `showProduct()` / `showOrder()` inside them.
+**Overriding rules**
+- Same name and parameters. The return type is the same or a subtype (covariant).
+- **Cannot reduce visibility.** `public` in the parent → `public` in the child, or you get `show() in B cannot override show() in A` (attempting to assign weaker access privileges).
+- `final`, `static` and `private` methods and constructors **cannot** be overridden.
+- Always write `@Override`, so the compiler catches typos.
 
----
-
-## 11. Abstract Class & Abstract Method
+## 11. Abstract Class and Abstract Method
 
 ```java
 abstract class Account {
     abstract double calculateInterest();   // no body, ends with ;
 }
 ```
-**Abstract class**
-- It **cannot be instantiated**: `new Account(...)` gives `Account is abstract; cannot be instantiated`.
-- It *can* still have constructors (called through `super(...)`), fields, normal methods, static methods and final methods.
-- Use it when the requirement says *"general idea"*, *"should not create a generic object"* or *"serve as a base class"*.
+- An abstract class **cannot be instantiated**, but it can have constructors, fields, normal methods, static methods and final methods.
+- A class with any abstract method **must** be abstract.
+- Every concrete child **must** implement it, or you get `X is not abstract and does not override abstract method m() in Y`.
+- **Illegal:** `abstract final`, `abstract static` and `abstract private` (verified: `illegal combination of modifiers`).
 
-**Abstract method**
-- It declares **what** must exist but not **how**: no body.
-- If a class has an abstract method, the class **must** be abstract.
-- Every concrete child **must** override it, or you get the error `X is not abstract and does not override abstract method ...`. That forced override is the whole point: each account or vehicle type has to supply its own logic.
-- Use it when the requirement says *"define that the operation must exist but don't give a common implementation"* or *"each type calculates differently"*.
+## 12. Final
 
-**Illegal combinations:** `abstract final`, `abstract static`, `abstract private`. An abstract method or class exists *to be* overridden or extended, and those modifiers forbid exactly that.
-
----
-
-## 12. `final`: variable, method, class
-
-| Used on | Meaning | Error if you break it |
+| On | Meaning | Error when broken |
 |---|---|---|
-| **variable** | assign once, never change | `cannot assign a value to final variable accountNumber` |
-| **method** | inherited but **cannot be overridden** | `verifyKYC() in X cannot override verifyKYC() in Account` (overridden method is final) |
-| **class** | **cannot be extended** | `cannot inherit from final BankPolicy` |
+| variable | assign once | `cannot assign a value to final variable id` |
+| method | no override | `m() in B cannot override m() in A` + `overridden method is final` |
+| class | no subclass | `cannot inherit from final X` |
+
+- **Blank final:** declared without a value and assigned once in **every** constructor.
+- A `final` class can still be instantiated with `new`.
+- A `final` reference can't point to a new object, but the object itself can still change.
+
+## 13. Polymorphism and Casting
 
 ```java
-final long accountNumber;         // a "blank final": assigned in the constructor, then locked
-final void verifyKYC() { ... }    // same KYC for everyone, no child can replace it
-final class BankPolicy { ... }    // nobody can write "extends BankPolicy"
+Account a = new SavingsAccount(...);   // upcasting (automatic)
+a.calculateInterest();                 // SavingsAccount version runs
 ```
-- A `final` field must be assigned **exactly once**: either where it's declared or in **every** constructor.
-- `static final` makes a constant, e.g. `static final String HOSPITAL_NAME = "City Care";`
-- A final class **can still be instantiated**, since `new BankPolicy()` is fine. It just can't have children.
-- `final` on an object reference locks the *reference*, not the object's contents.
-
----
-
-## 13. Runtime Polymorphism
-
+- The **reference type** decides **what you can call** (checked at compile time).
+- The **object type** decides **which overridden version runs** (decided at run time).
+- A child-only method needs a **downcast**:
 ```java
-Account a1 = new SavingsAccount(20001, "Asha", 40000, 5000);   // upcasting
-a1.calculateInterest();   // runs SavingsAccount's version
-```
-- **Reference type** (`Account`) decides **what you are allowed to call**. This is checked at compile time.
-- **Object type** (`SavingsAccount`) decides **which version runs**. This is decided at run time and is called *dynamic method dispatch*.
-- So `a1.withdraw()` is OK because `Account` has it. `a1.refuel()` on a `Vehicle` reference is a **compile error**, because `Vehicle` has no `refuel`, even though the object might be a PetrolCar.
-
-```java
-Account[] accounts = { a1, a2, a3 };
-for (Account a : accounts) {
-    a.verifyKYC();          // final, so always Account's version
-    a.calculateInterest();  // a different version for each object
-    a.displayDetails();
+if (v instanceof PetrolCar) {
+    ((PetrolCar) v).refuel(5);
 }
 ```
-**Why it's useful:** one loop and one reference type handle every account type, including ones added later (StudentAccount, FlyingCar), with **no changes** to the loop or to the parent class.
+- A wrong downcast compiles but fails at run time with `ClassCastException: class Bike cannot be cast to class PetrolCar`. Always check with `instanceof` first.
 
----
+## 14. Abstract Class vs Interface
 
-## 14. Requirement → Keyword Cheat Sheet
+| | Abstract class | Interface |
+|---|---|---|
+| Keyword | `extends` (one only) | `implements` (many) |
+| Fields | any | `public static final` only |
+| Constructor | yes | no |
+| Methods | abstract + normal | abstract (+ default/static) |
+| Use when | related classes share code | unrelated classes share a rule |
 
-This is the most useful table for Notebooks 1, 2, 3, 5 and 6.
+## 15. Constructor Design Problem
 
-| Requirement wording | Keyword |
-|---|---|
-| "should not be possible to create a general X object" / "base class, not used to create objects" | `abstract class` |
-| "declare the operation but not provide implementation" / "each type calculates differently" | `abstract` method + `@Override` in children |
-| "must never change once assigned" (ID, account number) | `final` variable |
-| "children inherit it but cannot override / replace it" | `final` method |
-| "no one may create a subclass" / "should not be extended / inherited further" | `final class` |
-| "belongs to the class, not objects" / "shared by all" / "stored only once" | `static` variable |
-| "callable without creating an object" / "call using class name" | `static` method |
-| "count how many objects created" | `static int count` + `count++` in the **parent constructor** + `static` getter |
-| "not directly accessible from outside the class" | `private` + getter / update method |
-| "class + subclasses + same package" | `protected` |
-| "only classes within the same package" | default (no modifier) |
-| "same reference works with different objects" | runtime polymorphism (`Parent p = new Child()`) |
-| "reuse parent initialization in child" | `super(...)` |
-| "reuse another constructor of the same class" | `this(...)` |
+`(int id, String name)` and `(int id, String department)` **cannot both exist**, because both are `(int, String)`. Overloading ignores parameter names.
 
----
-
-## 15. Constructor Design Problem (Factory Methods)
-
-Suppose you want both `(id, name)` and `(id, department)`. Both are `(int, String)`, so they **cannot coexist**: overloading looks at types, not meaning.
-
-**The fix is static factory methods.** Methods can have different names; constructors can't.
+**Fix: static factory methods** (unlike constructors, methods can have different names):
 ```java
-static Employee withName(int id, String name)      { return new Employee(id, name); }
-static Employee withDepartment(int id, String dep) { return new Employee(id, "Not Assigned", dep); }
+static Employee withName(int id, String n) {
+    return new Employee(id, n, "Not Assigned");
+}
+static Employee withDept(int id, String d) {
+    return new Employee(id, "Not Assigned", d);
+}
 ```
 
-| Case | Types | Result |
-|---|---|---|
-| Employee (id,name) vs (id,dept) | (int,String) both | ✘ → factory |
-| Order (id,restaurant,item) vs (id,customer,item) | (int,String,String) | ✘ → factory |
-| Hotel (id,guest,roomType) vs (id,guest,company) | (int,String,String) | ✘ → factory |
-| Vehicle packageAmount vs securityDeposit | (int,String,String,double) | ✘ → factory |
-| Patient (id,age) vs (id,deposit) | (int,int) vs (int,double) | ✔, but an int literal picks `age` |
-| Course (id,name) / (id,name,course) / (id,name,sem) | all differ | ✔ fine |
-
-### Recipe for any constructor question
+**Recipe for any constructor question**
 1. Make the fields `private`.
-2. The **longest constructor is the master**. It does all the `this.f = f;` assignments.
-3. Every other constructor **delegates** with `this(...)` (or `super(...)` in a child) and passes that case's defaults.
-4. The no-arg constructor passes the "Not Assigned" defaults.
-5. "Automatically admitted/confirmed/booked" means pass `true` down the chain.
-6. For a new requirement: different parameter types → new constructor; same types → **static factory**.
-7. Add getters/setters and a `display()` method.
+2. The longest constructor is the **master** and does all the assignments.
+3. The others delegate with `this(...)` / `super(...)` and pass the defaults.
+4. Different parameter types → new constructor. Same types → static factory.
 
 ---
 
-# PART 2 — NOTEBOOK SOLUTIONS
+# Part 3 - Notebook Solutions
 
-## Notebook 1 — SecureBank (Banking System)
+> [!IMPORTANT]
+> Try each question first. The code and output are hidden. Tap **Show** to open them.
 
-### Requirement → keyword mapping
-| Requirement | What we used |
+## Notebook 1 - SecureBank
+
+**Type:** [A - Design Scenario](#type-a---design-scenario)
+
+**Requirement → keyword**
+| Requirement | Solution |
 |---|---|
 | `new Account()` not allowed | `abstract class Account` |
 | Account number never changes | `final long accountNumber` |
-| Interest differs per type, parent defines it must exist | `abstract double calculateInterest();` |
-| Same KYC for all, children can't replace it | `final void verifyKYC()` |
-| Count all accounts, `Account.getAccountCount()` | `static int accountCount` + `static` method, `++` in the constructor |
-| Nobody can extend `BankPolicy` | `final class BankPolicy` |
+| Interest differs per type | `abstract double calculateInterest();` |
+| KYC same for all | `final void verifyKYC()` |
+| Count all accounts | `static int accountCount` + `static getAccountCount()` |
+| No subclass of BankPolicy | `final class BankPolicy` |
 
-### Changes to the given Part A skeleton
-- `long accountNumber` → `final long accountNumber`
-- `int accountCount = 0` → `static int accountCount = 0`
-- constructor: add `accountCount++;`
-- `void verifyKYC()` → `final void verifyKYC()`
-- `void calculateInterest();` → `abstract double calculateInterest();` (a plain `abstract void` is also acceptable)
-- `void getAccountCount()` → `static void getAccountCount()`
+**Part A: the 6 edits to the skeleton**
+- `final long accountNumber`
+- `static int accountCount = 0` + `accountCount++;` in the constructor
+- `final void verifyKYC()`
+- `abstract double calculateInterest();` (`abstract void` also acceptable)
+- `static void getAccountCount()`
 
-### Full code (`SecureBank.java`)
+**Class design**
+```text
+Account (abstract)
+├── SavingsAccount      minimumBalance, 4%
+├── CurrentAccount      overdraftLimit, 0%
+├── FixedDepositAccount depositPeriod, 7%, no withdrawal
+└── StudentAccount      daily limit, 3%  (Challenge)
+BankPolicy (final)
+```
+
+<details>
+<summary>Show full solution code</summary>
+
 ```java
 abstract class Account {
 
@@ -664,8 +834,12 @@ public class SecureBank {
 }
 ```
 
-### Output
-```
+</details>
+
+<details>
+<summary>Show output</summary>
+
+```text
 ===== Part C =====
 Deposited 10000.0 | Balance: 60000.0
 Withdrew 20000.0 | Balance: 40000.0
@@ -712,51 +886,56 @@ Student interest (3%): 195.0
 Total Accounts Created: 7
 ```
 
-### Walking through the logic
-- **Savings:** 50000 + 10000 = 60000, minus 20000 = **40000**. Withdrawing 38000 would leave 2000, which is below the 5000 minimum, so it's **rejected**. Interest = 40000 × 4% = **1600**.
-- **Current:** 30000 + 5000 = 35000. Withdrawing 45000 gives **−10000**. The overdraft limit is 20000, so the lowest allowed balance is −20000 and −10000 is allowed. The check is `balance - amount < -overdraftLimit` → reject.
-- **FD:** withdrawal is blocked. Interest = 100000 × 7% = **7000**.
-- The count after Part C is **3**. After Part E (+3) and the Challenge (+1) it's **7**. The count is static and goes up in the parent constructor, so **StudentAccount is counted without changing `Account`**.
+</details>
 
-### Part D answers
-1. **`Account a = new Account(10004, "John", 10000);`** → **compile error**: `Account is abstract; cannot be instantiated`. A generic account has no defined interest rule. The bank wants only concrete types to exist, and `abstract` enforces that.
-2. **`s.accountNumber = 50000;`** → **compile error**: `cannot assign a value to final variable accountNumber`. An account number identifies the account for its whole lifetime. If it could change, transactions could land in the wrong account.
-3. **Overriding `verifyKYC()` in SavingsAccount** → **not allowed**: `verifyKYC() in SavingsAccount cannot override verifyKYC() in Account; overridden method is final`. KYC is a regulatory process and has to be identical for every account.
-4. **`class SpecialPolicy extends BankPolicy {}`** → **does not compile**: `cannot inherit from final BankPolicy`. A subclass could change policy values or behaviour, so `final` blocks it. (Creating `new BankPolicy()` is still fine.)
-5. **`Account.getAccountCount()`** works because the method is `static`: it belongs to the class, not to an object, and reads a static counter. Also note it can be called even though `Account` is abstract, because static members don't need an object.
+**Logic walkthrough**
+- **Savings:** 50000 + 10000 = 60000 − 20000 = **40000**. Withdrawing 38000 would leave 2000, which is below the 5000 minimum, so it's **rejected**. Interest = 40000 × 4% = **1600**.
+- **Current:** 30000 + 5000 = 35000. Withdrawing 45000 gives **−10000**, which is allowed because the limit is −20000. Reject if `balance - amount < -overdraftLimit`.
+- **FD:** withdrawal is blocked before maturity. Interest = 100000 × 7% = **7000**.
+- **Count:** 3 after Part C, 6 after Part E, **7** after the Challenge.
 
-### Concept identification
-| Concept | Where in the program |
+**Part D answers**
+1. `new Account(...)` → `Account is abstract; cannot be instantiated`
+2. `s.accountNumber = 50000;` → `cannot assign a value to final variable accountNumber`
+3. Overriding `verifyKYC()` → not allowed, the method is final (`overridden method is final`)
+4. `extends BankPolicy` → `cannot inherit from final BankPolicy`
+5. `Account.getAccountCount()` works because it's a static method that reads a static counter
+
+**Concept identification**
+| Concept | Where |
 |---|---|
-| Inheritance | `SavingsAccount/CurrentAccount/FixedDepositAccount/StudentAccount extends Account` |
-| Abstract class | `abstract class Account`: blocks `new Account()` |
-| Abstract method | `abstract double calculateInterest();` |
-| Method overriding | `withdraw()` and `calculateInterest()` in each child, marked `@Override` |
+| Inheritance | `SavingsAccount extends Account` (all 4 children) |
+| Abstract class | `abstract class Account` |
+| Abstract method | `abstract double calculateInterest()` |
+| Overriding | `withdraw()`, `calculateInterest()` with `@Override` |
 | Static variable | `static int accountCount` |
 | Static method | `static void getAccountCount()` |
 | Final variable | `final long accountNumber` |
 | Final method | `final void verifyKYC()` |
 | Final class | `final class BankPolicy` |
-| Runtime polymorphism | `Account a1 = new SavingsAccount(...)` and the loop over `Account[]`, where each object runs its own `calculateInterest()` |
+| Runtime polymorphism | `Account a1 = new SavingsAccount(...)` + `Account[]` loop |
 
----
+**If the scenario changes:** Insurance policies, Employees, Shapes or Library items all use the same design. Rename the fields, keep the 6 edits.
 
-## Notebook 2 — Online Course Management
+## Notebook 2 - Course Management
 
-### ⚠️ The trick in this question
-Requirement 3 says *"every course calculates its fee differently"*, so `Course` must be **abstract**. Requirement 5 says *"a course should not be inherited further"*, which means **final**. But **one class can't be both**: `abstract final` gives `illegal combination of modifiers: abstract and final`, because abstract *needs* children and final *forbids* them.
+**Type:** [B - Requirements to Modifiers](#type-b---requirements-to-modifiers)
 
-**Correct design:** `abstract class Course` holds the rules. The concrete course type, `final class JavaCourse extends Course`, is the one that can't be inherited *further*.
+> [!WARNING]
+> **The trap:** requirement 3 needs `abstract` (fee differs per course), but requirement 5 says "not inherited further" (`final`). One class can't be both: `illegal combination of modifiers: abstract and final`.
+> **Answer:** `abstract class Course` + `final class JavaCourse extends Course`.
 
 | # | Requirement | Keyword |
 |---|---|---|
 | 1 | Course ID never changes | `final int courseId` |
-| 2 | College name common to all | `static String collegeName` |
-| 3 | Fee calculation differs per course | `abstract double calculateFee()` |
-| 4 | Display course ID without an object | `static void displayCourseId(int id)` |
+| 2 | College name common | `static String collegeName` |
+| 3 | Fee differs per course | `abstract double calculateFee()` |
+| 4 | Show ID without object | `static void displayCourseId(int id)` |
 | 5 | Not inherited further | `final class JavaCourse` |
 
-### Code (`CourseDemo.java`)
+<details>
+<summary>Show full solution code</summary>
+
 ```java
 abstract class Course {
     final int courseId;                          // 1. never changes after creation
@@ -803,30 +982,48 @@ public class CourseDemo {
 }
 ```
 
-### Output
-```
+</details>
+
+<details>
+<summary>Show output</summary>
+
+```text
 College: ABC Engineering College
 Course ID: 501
 Course Name: Core Java
 Java Course Fee: 15000.0
 ```
 
-**Why does `displayCourseId` take a parameter?** A static method has no object, so it has no `this.courseId` to read. The ID has to be passed in. (If it tried to read `courseId` directly, you'd get `non-static variable courseId cannot be referenced from a static context`.)
+</details>
 
----
+**Why does `displayCourseId` take a parameter?** A static method has no object, so there's no `this.courseId` to read. The ID must be passed in.
 
-## Notebook 3 — AutoTest Labs (Vehicle Testing)
+## Notebook 3 - AutoTest Labs
 
-This has the same structure as Notebook 1: `Vehicle` = `Account`, `start()` = `verifyKYC()`, `accelerate()` = `calculateInterest()`, `SecurityConfiguration` = `BankPolicy`.
+**Type:** [A - Design Scenario](#type-a---design-scenario). This is the same design as Notebook 1 with different names:
 
-### Changes to the Part A skeleton
-- `int vehicleId` → `final int vehicleId`
-- `int vehicleCount = 0` → `static int vehicleCount = 0`, plus `vehicleCount++;` in the constructor
-- `void start()` → `final void start()`
-- `void accelerate();` → `abstract void accelerate();`
-- `void getVehicleCount()` → `static void getVehicleCount()`
+| Notebook 1 | Notebook 3 |
+|---|---|
+| `Account` | `Vehicle` |
+| `final accountNumber` | `final vehicleId` |
+| `final verifyKYC()` | `final start()` |
+| `abstract calculateInterest()` | `abstract accelerate()` |
+| `BankPolicy` | `SecurityConfiguration` |
+| `StudentAccount` | `FlyingCar` |
 
-### Code (`AutoTestLabs.java`)
+**Class design**
+```text
+Vehicle (abstract)
+├── PetrolCar    fuelLevel, refuel(), +10
+├── ElectricCar  batteryLevel, chargeBattery(), +20
+├── Bike         helmetAvailable, +5
+└── FlyingCar    altitude, takeOff(), land()  (Challenge)
+SecurityConfiguration (final)
+```
+
+<details>
+<summary>Show full solution code</summary>
+
 ```java
 abstract class Vehicle {
 
@@ -1000,8 +1197,12 @@ public class AutoTestLabs {
 }
 ```
 
-### Output
-```
+</details>
+
+<details>
+<summary>Show output</summary>
+
+```text
 ===== Part C =====
 Vehicle safety check completed
 Vehicle started
@@ -1053,33 +1254,33 @@ Alef Model A : 50 km/h
 Total Vehicles Created: 7
 ```
 
-### Walking through the logic
-- **Part C:** Petrol 2×10 = **20**, Electric 3×20 = **60**, Bike 4×5 = **20**. These match the expected speeds.
-- **Part E:** each vehicle is accelerated **twice**, once in the individual calls and once inside the loop. So Honda = 2×10 = **20**, Nexon = 2×20 = **40**, Hunter = 2×5 = **10**. Don't expect 10/20/5 here.
-- The count is 3 after Part C and **7** at the end (3 + 3 + FlyingCar).
-- `v1.refuel(10)` would **not compile**: the reference type `Vehicle` has no `refuel`. You'd need `((PetrolCar) v1).refuel(10);`.
+</details>
 
-### Part D answers
-1. **`new Vehicle(104,"ABC","XYZ")`** → `Vehicle is abstract; cannot be instantiated`. "Vehicle" is only a general idea; it has no `accelerate()` body.
-2. **`p.vehicleId = 999;`** → `cannot assign a value to final variable vehicleId`. The ID must stay the same so test records match the correct vehicle.
-3. **Overriding `start()` in ElectricCar** → not allowed: `start() in ElectricCar cannot override start() in Vehicle; overridden method is final`. The safety-check procedure must be the same for every vehicle.
-4. **`extends SecurityConfiguration`** → `cannot inherit from final SecurityConfiguration`. The security settings can't be altered through a subclass.
-5. **`Vehicle.getVehicleCount()`** → it's `static`, so it belongs to the class. It needs no object and reads the shared static counter.
+**Logic walkthrough**
+- **Part C:** Petrol 2 × 10 = **20**, Electric 3 × 20 = **60**, Bike 4 × 5 = **20**.
+- **Part E:** each vehicle accelerates **twice** (once individually, once in the loop), so the speeds are **20 / 40 / 10**.
+- **Count:** 3, then **7** at the end.
+- `v1.refuel(10)` does not compile, because `Vehicle` has no `refuel`. Use `((PetrolCar) v1).refuel(10)`.
 
-**Concept identification:** the same table as Notebook 1, with Vehicle names: `extends Vehicle`, `abstract class Vehicle`, `abstract void accelerate()`, `@Override accelerate()`, `static int vehicleCount`, `static getVehicleCount()`, `final int vehicleId`, `final void start()`, `final class SecurityConfiguration`, and the `Vehicle[]` loop for runtime polymorphism.
+**Part D answers**
+1. `new Vehicle(...)` → `Vehicle is abstract; cannot be instantiated`
+2. `p.vehicleId = 999;` → `cannot assign a value to final variable vehicleId`
+3. `start()` in ElectricCar → not allowed, the method is final
+4. `extends SecurityConfiguration` → `cannot inherit from final SecurityConfiguration`
+5. `Vehicle.getVehicleCount()` → a static method, so no object is needed
 
----
+## Notebook 4 Q1 - Product and Electronics
 
-## Notebook 4 — Online Shopping
+**Type:** [C - Constructor Overloading with super](#type-c---constructor-overloading-with-super)
 
-The rules here are **no overriding, no arrays, no abstract/interface**. This notebook tests **inheritance + constructor overloading + `super(...)`**.
+**Key points**
+- `Product(name, price)` → `this(name, price, 10)`: the default stock lives in one place.
+- Each `Electronics` constructor calls `super(...)` first, then sets `warrantyYears = 1` and `discountPercentage = 5` when they aren't given.
+- No overriding: use `showElectronicsDetails()`, which calls the inherited `showProduct()`.
+- `purchase()`: check stock → calculate → print the bill → reduce stock.
 
-### Q1 — Product / Electronics
-
-**Key ideas**
-- Put the default in **one place**: `Product(name, price)` → `this(name, price, 10)`.
-- Each child constructor **must** call `super(...)` first, then set its own fields and defaults (`warrantyYears = 1`, `discountPercentage = 5`).
-- `purchase()` checks the stock **before** changing anything, and prints the bill **before** reducing the stock.
+<details>
+<summary>Show full solution code</summary>
 
 ```java
 class Product {
@@ -1194,8 +1395,12 @@ public class OnlineShopping {
 }
 ```
 
-**Output** (matches the sample exactly)
-```
+</details>
+
+<details>
+<summary>Show output (matches the sample exactly)</summary>
+
+```text
 Product Name: Smartphone
 Price: 30000.0
 Stock: 10
@@ -1238,21 +1443,29 @@ Final Amount: 144000.0
 Remaining Stock: 2
 ```
 
-**The maths**
-- Smartphone: 30000×2 = 60000; 5% = 3000 → final 57000; stock 10−2 = 8
-- Laptop: 65000×1 = 65000; 5% = 3250 → final 61750; stock 5−1 = 4
-- TV: 80000×2 = 160000; 10% = 16000 → final 144000; stock 4−2 = 2
+</details>
 
-**Why `30000` prints as `30000.0`:** `price` is a `double`, so the `int` literal is widened. Doubles always print with `.0`.
+**Maths**
+| Item | Total | Discount | Final | Stock |
+|---|---|---|---|---|
+| Phone | 60000 | 5% = 3000 | 57000 | 10→8 |
+| Laptop | 65000 | 5% = 3250 | 61750 | 5→4 |
+| TV | 160000 | 10% = 16000 | 144000 | 4→2 |
 
----
+`30000` prints as `30000.0` because `price` is a `double`.
 
-### Q2 — Order / PremiumOrder
+## Notebook 4 Q2 - Order and PremiumOrder
 
-**Key ideas**
-- `Order(id, name)` → `this(id, name, 0)`, so the default amount is 0.
-- `addPurchase()` increases the amount and **then** calls `applyFreeDelivery()`.
-- Final Bill = Amount + Tax(5%) + Delivery − Discount.
+**Type:** [C - Constructor Overloading with super](#type-c---constructor-overloading-with-super)
+
+**Key points**
+- `Order(id, name)` → `this(id, name, 0)`
+- Final Bill = Amount + Tax (5%) + Delivery − Discount
+- `addPurchase()` adds to the amount and **then** calls `applyFreeDelivery()`
+- Delivery is free when the amount ≥ 5000
+
+<details>
+<summary>Show full solution code</summary>
 
 ```java
 class Order {
@@ -1368,8 +1581,12 @@ public class OrderSystem {
 }
 ```
 
-**Output**
-```
+</details>
+
+<details>
+<summary>Show output</summary>
+
+```text
 --- Initial Order ---
 Order ID: 101
 Customer Name: Ravi
@@ -1416,26 +1633,31 @@ Discount Amount: 1500.0
 Final Bill: 9000.0
 ```
 
-**The maths**
-| Order | Amount | Tax 5% | Delivery | Discount | Final |
+</details>
+
+**Maths**
+| Order | Amt | Tax | Deliv | Disc | Final |
 |---|---|---|---|---|---|
-| Ravi (0 + 3000) | 3000 | 150 | 100 (below 5000) | 5% = 150 | 3000+150+100−150 = **3100** |
-| Ananya | 6000 | 300 | 0 (≥ 5000) | 5% = 300 | **6000** |
-| Kiran | 10000 | 500 | 200 → **0** | 15% = 1500 | 10000+500−1500 = **9000** |
+| Ravi | 3000 | 150 | 100 | 150 | 3100 |
+| Ananya | 6000 | 300 | 0 | 300 | 6000 |
+| Kiran | 10000 | 500 | 0 | 1500 | 9000 |
 
-Kiran's delivery was set to 200 in the constructor, but `applyFreeDelivery()` changes it to 0 because 10000 ≥ 5000.
+Kiran's delivery was 200, but it becomes 0 because 10000 ≥ 5000.
 
----
+## Notebook 5 - Bank Account
 
-## Notebook 5 — Bank Account Management
+**Type:** [B - Requirements to Modifiers](#type-b---requirements-to-modifiers)
 
 | # | Requirement | Keyword |
 |---|---|---|
-| 1 | Common interest method, actual calculation in child types | `abstract class BankAccount` + `abstract double calculateInterest()` |
-| 2 | Bank name shared by all | `static String bankName` |
-| 3 | Display bank name without an object | `static void displayBankName()` |
-| 4 | `SavingsAccount` cannot be extended | `final class SavingsAccount` |
-| 5 | Account number not accessible from outside | `private long accountNumber` + public getter |
+| 1 | Interest defined, children calculate | `abstract` class + method |
+| 2 | Bank name shared | `static String bankName` |
+| 3 | Show bank name without object | `static void displayBankName()` |
+| 4 | SavingsAccount not extendable | `final class SavingsAccount` |
+| 5 | Account number hidden | `private` + public getter |
+
+<details>
+<summary>Show full solution code</summary>
 
 ```java
 abstract class BankAccount {
@@ -1498,40 +1720,46 @@ public class BankDemo {
 }
 ```
 
-**Output** (matches the expected output)
-```
+</details>
+
+<details>
+<summary>Show output (matches expected)</summary>
+
+```text
 Bank: ABC Bank
 Account Number: 100245
 Account Holder: Anil
 Interest: 2500.0
 ```
-- Interest 2500 = 50000 × 5%. The question doesn't give a balance or rate, so any pair that gives 2500 is fine (e.g. 50000 @ 5%).
-- Try `s.accountNumber` from `main` → `accountNumber has private access in BankAccount`. That's the proof that requirement 5 is met.
-- `private` fields are **not inherited in a usable way**. `SavingsAccount` can't read `accountNumber` directly either; it has to use `getAccountNumber()`.
 
----
+</details>
 
-## Notebook 6 — Hospital Patient Management
+- Interest 2500 = 50000 × 5%.
+- `s.accountNumber` from `main` → `accountNumber has private access in BankAccount`. That proves requirement 5.
+- Even `SavingsAccount` can't read the private field directly. It uses the getter.
 
-This notebook is all about **access specifiers + non-access modifiers**. Map each numbered requirement to one keyword:
+## Notebook 6 - Hospital Patients
+
+**Type:** [B - Requirements to Modifiers](#type-b---requirements-to-modifiers). The focus is access specifiers and packages.
 
 | # | Requirement | Declaration |
 |---|---|---|
-| 1 | Patient ID never changed | `private final int patientId` |
-| 2 | Hospital name stored once, accessible without an object | `private static final String HOSPITAL_NAME` + `public static getHospitalName()` |
+| 1 | ID never changes | `private final int patientId` |
+| 2, 7 | Hospital name once, no object | `private static final` + `public static` method |
 | 3 | Medical record confidential | `private String medicalRecord` |
-| 4 | Category: class + subclasses + same package | `protected String patientCategory` |
-| 5 | Room number: same package only | `int roomNumber` (**default**, no keyword) |
-| 6, 10 | Each patient type calculates the bill | `public abstract double calculateBill()` |
-| 7 | Show hospital name without an object | `public static void displayHospitalName()` |
-| 8 | Base class, no direct objects | `abstract class Patient` |
-| 9 | InPatient, OutPatient | `class InPatient extends Patient`, `class OutPatient extends Patient` |
-| 11 | Modify medical record | `public void updateMedicalRecord(String)` (the only way in) |
-| 12 | Show all details | `public void displayPatientDetails()` |
+| 4 | Class + subclass + package | `protected String patientCategory` |
+| 5 | Same package only | `int roomNumber` (default) |
+| 6, 10 | Bill differs per type | `public abstract double calculateBill()` |
+| 8 | Base class, no objects | `abstract class Patient` |
+| 9 | Two patient types | `InPatient`, `OutPatient` |
+| 11 | Modify record | `public void updateMedicalRecord(String)` |
+| 12 | Display all | `public void displayPatientDetails()` |
 
-Requirement 5 mentions a "hospital package", so we use `package hospital;`. That's what gives *default* access its meaning.
+**Run:** `javac -d . HospitalDemo.java` then `java hospital.HospitalDemo`
 
-### Code (`HospitalDemo.java`)
+<details>
+<summary>Show full solution code</summary>
+
 ```java
 package hospital;
 
@@ -1634,15 +1862,12 @@ public class HospitalDemo {
 }
 ```
 
-**Compile & run** (because of `package hospital;`):
-```
-javac -d . HospitalDemo.java
-java hospital.HospitalDemo
-```
-(Without the package line, a plain `javac HospitalDemo.java` + `java HospitalDemo` also works.)
+</details>
 
-### Output
-```
+<details>
+<summary>Show output</summary>
+
+```text
 Hospital: City Care Hospital
 
 Patient ID       : 1001
@@ -1667,98 +1892,258 @@ Medical Record   : Fractured leg - plaster applied
 Bill Amount      : 10000.0
 ```
 
-### Explaining your choices (viva-ready)
-- **InPatient bill** = 5 days × 2000 = 10000. **OutPatient** = 500 + 300 = 800.
-- `displayPatientDetails()` calls `calculateBill()`, and **each object runs its own version**. That's runtime polymorphism inside the parent.
-- `p1.medicalRecord` from `main` → `medicalRecord has private access in Patient`. That's why `updateMedicalRecord()` exists, and it can **validate** the new value (encapsulation).
-- `new Patient(...)` → `Patient is abstract; cannot be instantiated`.
-- **Why `protected` for category?** InPatient and OutPatient set or read it. A subclass in *another* package can too, but an unrelated class outside the package can't.
-- **Why default for room number?** Only hospital-package classes (wards, billing) should see room allocation.
-- **Why `static final` for the hospital name?** `static` stores it once. `final` stops it from ever being changed.
+</details>
+
+**Viva points**
+- Bills: InPatient 5 × 2000 = **10000**, OutPatient 500 + 300 = **800**.
+- `displayPatientDetails()` calls `calculateBill()`, and each object runs its own version. That's polymorphism inside the parent.
+- **protected** for category: subclasses in any package can use it.
+- **default** for room number: only hospital-package classes see it.
+- **static final** for the hospital name: stored once and can never change.
 
 ---
 
-# PART 3 — CODING TRAPS
+# Part 4 - Practice Question
 
-## Compile errors you'll meet
+**Type A. Try it fully before opening the answer.**
 
-| Error message | Cause | Fix |
-|---|---|---|
-| `X is abstract; cannot be instantiated` | `new` on an abstract class | create a concrete child instead |
-| `X is not abstract and does not override abstract method m() in Y` | child forgot to implement the abstract method | implement it with `@Override` |
-| `cannot assign a value to final variable id` | changing a final field | don't; assign it only in the constructor |
-| `m() in B cannot override m() in A; overridden method is final` | overriding a final method | remove the override |
-| `cannot inherit from final X` | `extends` a final class | don't extend it |
-| `illegal combination of modifiers: abstract and final` | `abstract final class` | abstract parent + final child |
-| `x has private access in X` | using a private field from outside | use the getter / update method |
-| `non-static variable x cannot be referenced from a static context` | field or `this` used inside a static method / `main` | create an object first, or pass a parameter |
-| `constructor Book in class Book cannot be applied to given types` | `new Book()` but only parameterized constructors exist, **or** child with no `super(...)` when the parent has no no-arg constructor | write the no-arg constructor, or call `super(args)` |
-| `constructor Book(int,String) is already defined` | two constructors with the same parameter **types** | use a static factory method |
-| `call to this/super must be first statement in constructor` | a statement before `this(...)`/`super(...)` | move the call to line 1 |
-| `recursive constructor invocation` | A calls B, B calls A | chain in one direction only |
-| `variable x might not have been initialized` | local variable with no value, or a final field not set in every constructor | assign it |
-| `class X is public, should be declared in a file named X.java` | public class name ≠ file name | rename the file or drop `public` |
-| `invalid method declaration; return type required` | constructor name ≠ class name (typo or wrong capital letter) | fix the spelling |
-| `cannot find symbol: method refuel()` | calling a child-only method through a parent reference | cast: `((PetrolCar) v).refuel(5)` |
-| `possible lossy conversion from double to float` | `float f = 0.0;` | use `double`, or write `0.0f` |
+> **City Library System**
+>
+> A library lends Books and DVDs. More item types may be added later.
+> Every item has an **item ID**, which must never change after creation, and a **title**.
+> No one should be able to create a general `LibraryItem` object.
+> Every item calculates its late fee differently: Book Rs 2/day, DVD Rs 5/day.
+> All items use the same `checkMembership()` step, which prints "Membership verified". Children must not replace it.
+> The library wants to know how many items were created, using `LibraryItem.getItemCount()`.
+> `LibraryRules` stores max books per member and loan days, and must not be extended.
+>
+> **Tasks:**
+> (a) Write the classes. (b) Put a Book, a DVD and an EBook (Challenge: no late fee) into a `LibraryItem[]`, and loop over it to check membership, display details and print the late fee for 4 days. (c) Predict the errors for: `new LibraryItem(9,"t")`, `b.itemId = 7`, overriding `checkMembership()`, `extends LibraryRules`, and a child that forgets `calculateLateFee`.
 
-## Logic traps (it compiles, but the output is wrong)
-1. **`id = id;`** prints `0 / null`. Always write `this.id = id;`.
-2. **`count` not static** → prints `Total: 1`. The counter must be `static`.
-3. **`count++` in each child instead of the parent** → a new child type (StudentAccount) is not counted. Put it in the parent constructor.
-4. **Wrong constructor picked:** `new Patient(301, 5000)` picks `(int,int)`. Write `5000.0`.
-5. **Chaining order:** `this(...)`/`super(...)` runs first, so your own `println` prints last (`C B A`).
-6. **The constructor overwrites the instance block**, because the block runs before the constructor body.
-7. **Reducing stock before printing** → the bill shows the wrong "Remaining Stock", or stock goes negative. Check first, then print, then reduce.
-8. **Forgetting `applyFreeDelivery()` after `addPurchase()`** → the delivery charge stays at 100 even after the total crosses 5000.
-9. **Part E speeds** (Notebook 3): each vehicle accelerates twice → 20/40/10, not 10/20/5.
-10. **Integer division:** `amount * 5 / 100` is fine for a double `amount`, but `5 / 100 * amount` = **0** when written as ints. Multiply first, or use `0.05`.
+<details>
+<summary>Show solution code</summary>
 
-## Habits that save marks
-- The longest constructor is the master; the others are one-line `this(...)` / `super(...)` calls.
-- Always add `@Override` on overriding methods.
-- The getter for a boolean is `isX()`.
-- Validate in setters/update methods (`if (amount < 0) return;`).
-- Aligned labels: `System.out.println("Book ID   : " + bookId);`
-- Only one `public` class per file, and it's the one with `main`, matching the file name.
-- Delete old `.class` files if you get stale-class confusion.
+```java
+abstract class LibraryItem {
+    final int itemId;                 // never changes
+    String title;
+    static int itemCount = 0;         // shared by all items
+
+    LibraryItem(int itemId, String title) {
+        this.itemId = itemId;
+        this.title = title;
+        itemCount++;
+    }
+
+    final void checkMembership() {    // same for every item
+        System.out.println("Membership verified");
+    }
+
+    abstract double calculateLateFee(int daysLate);
+
+    void displayDetails() {
+        System.out.println("Item ID: " + itemId);
+        System.out.println("Title: " + title);
+    }
+
+    static void getItemCount() {
+        System.out.println("Total Items: " + itemCount);
+    }
+}
+
+class Book extends LibraryItem {
+    String author;
+
+    Book(int itemId, String title, String author) {
+        super(itemId, title);
+        this.author = author;
+    }
+
+    @Override
+    double calculateLateFee(int daysLate) {
+        return daysLate * 2;          // Rs 2 per day
+    }
+}
+
+class DVD extends LibraryItem {
+    int durationMinutes;
+
+    DVD(int itemId, String title, int durationMinutes) {
+        super(itemId, title);
+        this.durationMinutes = durationMinutes;
+    }
+
+    @Override
+    double calculateLateFee(int daysLate) {
+        return daysLate * 5;          // Rs 5 per day
+    }
+}
+
+class EBook extends LibraryItem {     // Challenge
+    double fileSizeMb;
+
+    EBook(int itemId, String title, double fileSizeMb) {
+        super(itemId, title);
+        this.fileSizeMb = fileSizeMb;
+    }
+
+    @Override
+    double calculateLateFee(int daysLate) {
+        return 0;                     // auto-returned, no fee
+    }
+}
+
+final class LibraryRules {
+    int maxBooksPerMember = 3;
+    int loanDays = 14;
+}
+
+public class CityLibrary {
+    public static void main(String[] args) {
+        LibraryItem[] items = {
+            new Book(1, "Wings of Fire", "A.P.J. Abdul Kalam"),
+            new DVD(2, "Interstellar", 169),
+            new EBook(3, "Java Basics", 2.5)
+        };
+        for (LibraryItem it : items) {
+            it.checkMembership();
+            it.displayDetails();
+            System.out.println("Late fee (4 days): "
+                    + it.calculateLateFee(4));
+        }
+        LibraryItem.getItemCount();
+    }
+}
+```
+
+</details>
+
+<details>
+<summary>Show output</summary>
+
+```text
+Membership verified
+Item ID: 1
+Title: Wings of Fire
+Late fee (4 days): 8.0
+Membership verified
+Item ID: 2
+Title: Interstellar
+Late fee (4 days): 20.0
+Membership verified
+Item ID: 3
+Title: Java Basics
+Late fee (4 days): 0.0
+Total Items: 3
+```
+
+</details>
+
+<details>
+<summary>Show predict-the-error answers (verified)</summary>
+
+1. `LibraryItem is abstract; cannot be instantiated`
+2. `cannot assign a value to final variable itemId`
+3. `checkMembership() in X cannot override checkMembership() in LibraryItem` (overridden method is final)
+4. `cannot inherit from final LibraryRules`
+5. `X is not abstract and does not override abstract method calculateLateFee(int) in LibraryItem`
+
+</details>
 
 ---
 
-# PART 4 — RAPID-FIRE REVISION + VIVA QUESTIONS
+# Part 5 - Traps and Compiler Errors
 
-## One-liners
+**Compile errors: message → fix**
+
+| Error message | Fix |
+|---|---|
+| `X is abstract; cannot be instantiated` | create a concrete child |
+| `X is not abstract and does not override abstract method` | implement it with `@Override` |
+| `cannot assign a value to final variable` | assign only in the constructor |
+| `overridden method is final` | remove the override |
+| `cannot inherit from final X` | don't extend it |
+| `illegal combination of modifiers: abstract and final` | abstract parent + final child |
+| `x has private access in X` | use the getter |
+| `has protected access` | access from a subclass or the same package |
+| `is not public in X; cannot be accessed from outside package` | default field; use the same package or `protected` |
+| `non-static variable cannot be referenced from a static context` | create an object first |
+| `constructor X in class X cannot be applied to given types` | wrong arguments, or missing `super(args)` |
+| `constructor X(int,String) is already defined` | same parameter types; use a factory method |
+| `call to super must be first statement` | move `super(...)` to line 1 |
+| `recursive constructor invocation` | don't chain in a circle |
+| `variable x might not have been initialized` | give the local/final variable a value |
+| `class X is public, should be declared in a file named X.java` | rename the file |
+| `invalid method declaration; return type required` | constructor name typo |
+| `cannot find symbol: method refuel` | downcast the parent reference |
+| `attempting to assign weaker access privileges` | keep the same or wider access |
+
+**Logic traps (it compiles, but the output is wrong)**
+1. `id = id;` → prints `0` / `null`. Use `this.id = id;`.
+2. A counter that isn't `static` → always prints 1.
+3. `count++` in the children, not the parent → new types aren't counted.
+4. `new Patient(301, 5000)` → picks `(int,int)`. Write `5000.0` for the double version.
+5. Chained constructors print the deepest one first (C B A).
+6. The constructor overwrites values set by the instance block.
+7. Reducing stock before printing the bill.
+8. Forgetting `applyFreeDelivery()` after `addPurchase()`.
+9. Part E objects are accelerated twice → 20 / 40 / 10.
+10. `5 / 100 * x` = 0 with integers. Write `x * 5 / 100`.
+11. A wrong downcast → `ClassCastException` at run time. Check with `instanceof` first.
+
+---
+
+# Part 6 - Revision and Viva
+
+## Rapid-fire
 - Writing any constructor removes the default constructor.
-- A constructor has no return type. It can be `private`, but not `static`/`final`/`abstract`.
-- Constructors are **not inherited**. The child calls the parent's constructor with `super(...)`.
-- The parent constructor always runs **before** the child constructor.
-- `this(...)` and `super(...)` must be first, and you can't use both in one constructor.
-- Instance block: once per object, before the constructor body, in textual order.
-- Static block: once, when the class loads.
+- A constructor has no return type and is not inherited. It can be private, but not static, final or abstract.
+- `this(...)` / `super(...)` must come first, and you can't use both.
+- Parent static → child static → parent instance+constructor → child instance+constructor.
 - Local variables get no default value.
-- Overloading never looks at parameter names, only types, count and order.
-- `this` / instance fields are illegal in a static context.
-- Abstract class: it can have constructors, fields and concrete methods, but you can't use `new` on it.
-- An abstract method means the class must be abstract, and every concrete child must override it.
-- `final` variable = constant, `final` method = no override, `final` class = no subclass.
-- `abstract` + `final` together is illegal.
-- A `static` method can't be overridden (it's hidden); a `private` method is not inherited.
-- The reference type decides **what** you can call; the object type decides **which version** runs.
+- Overloading ignores parameter names.
+- No `this` in a static context.
+- An abstract class has constructors but can't be used with `new`.
+- An abstract method means the class is abstract, and every concrete child must override it.
+- final variable = constant, final method = no override, final class = no child.
+- `abstract` + `final` / `static` / `private` → illegal.
+- Static methods are hidden, not overridden. Private methods are not inherited.
+- Reference type = what you can call. Object type = which version runs.
+- Classes can't do multiple inheritance (diamond problem); interfaces allow it.
 
-## Likely viva questions (short answers)
-1. **Why can't we create an object of an abstract class?** It's incomplete: its abstract methods have no body, so calling one would have nothing to run.
-2. **Can an abstract class have a constructor?** Yes. It runs through `super(...)` when a child object is created, to set up the common fields.
-3. **Abstract class vs final class?** Abstract means it *must* be extended; final means it *can't* be extended. They're opposites.
-4. **Difference between a static and an instance variable?** Static has one copy per class. Instance has one copy per object.
-5. **Why use `final` for an ID?** So it's assigned once, in the constructor, and can never be changed afterwards.
-6. **Why make `verifyKYC()` / `start()` final?** A mandatory standard procedure has to be the same everywhere, and final stops any child from replacing it.
-7. **What is runtime polymorphism?** A parent reference points to a child object, and the overridden method that runs is picked at run time from the actual object.
-8. **Overloading vs overriding?** Overloading: same name, different parameters, decided at compile time. Overriding: same signature in the child, decided at run time.
-9. **Why `@Override`?** The compiler checks that you really are overriding, which catches spelling and signature mistakes.
-10. **Why is `protected` needed when we have default?** Default doesn't reach subclasses in other packages; `protected` does.
-11. **How do we add StudentAccount/FlyingCar without changing the parent?** Extend it, call `super(...)`, and override the abstract method. The parent constructor already counts it, and the polymorphic loop already handles it. This is the Open/Closed idea.
-12. **Why a getter instead of a public field?** It gives read access without write access, and lets you add validation or rules later.
+## Viva Questions
+1. **What is OOP?** Programming with objects that combine data and behaviour. Its four pillars are encapsulation, inheritance, polymorphism and abstraction.
+2. **Class vs object?** A class is a blueprint. An object is an instance of it in the heap.
+3. **Why can't we instantiate an abstract class?** It's incomplete: its abstract methods have no body.
+4. **Can an abstract class have a constructor?** Yes. It runs via `super(...)` to set up the common fields.
+5. **Abstract vs final class?** Abstract must be extended; final can't be. They're opposites.
+6. **Static vs instance variable?** Static has one copy per class. Instance has one copy per object.
+7. **Why can `main` not use instance fields directly?** `main` is static, so there's no object.
+8. **Why is an ID `final`?** So it's assigned once and never changed.
+9. **Why is `verifyKYC()` / `start()` final?** A mandatory standard procedure can't be replaced by a child.
+10. **What is runtime polymorphism?** A parent reference to a child object, where the overridden method is chosen at run time.
+11. **Overloading vs overriding?** Different parameters, decided at compile time vs same signature in the child, decided at run time.
+12. **Why `@Override`?** The compiler checks it really overrides, which catches typos.
+13. **Why can't static methods be overridden?** They belong to the class and are chosen by the reference type (method hiding).
+14. **`this` vs `super`?** `this` = the current object/class. `super` = the parent part.
+15. **Why must `super(...)` be first?** The parent must be fully built before the child uses it.
+16. **What if the parent has no no-arg constructor?** The child must call `super(args)` explicitly, or it's a compile error.
+17. **private vs default vs protected?** Class only; package only; package + subclasses.
+18. **Why is protected needed when default exists?** Default doesn't reach subclasses in other packages.
+19. **What is encapsulation?** Private data plus controlled public methods with validation.
+20. **Upcasting vs downcasting?** Child→parent is automatic. Parent→child needs a cast and an `instanceof` check.
+21. **Why no multiple inheritance of classes?** The diamond problem: ambiguous inherited methods.
+22. **Abstract class vs interface?** Abstract class = shared code, one parent. Interface = a contract, many can be implemented.
+23. **How do you add a new type without changing the parent?** Extend it, call `super`, override the abstract method. This is the open/closed idea.
+24. **Why does the counter go in the parent constructor?** Every child passes through it, so every object is counted.
+25. **Can a final class be instantiated?** Yes. It just can't be extended.
 
----
-
-*Good luck! 🚀 Solve each notebook yourself first, then compare with these answers.*
+## Exam Day Checklist
+- [ ] Identify the question type (A / B / C) before writing.
+- [ ] For B, write the **requirement → keyword** table first.
+- [ ] Parent first: fields → constructor → final/static/abstract methods.
+- [ ] Children: `extends`, `super(...)` on line 1, `@Override`.
+- [ ] `main`: create the objects exactly as the question gives them.
+- [ ] Check the output labels and numbers against the expected output.
+- [ ] Theory parts: **compiles? → exact error → why**.
+- [ ] Only one `public` class, and it's the one with `main`.
