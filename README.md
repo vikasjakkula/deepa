@@ -1,6 +1,6 @@
 # Java OOP Exam Notes
 
-Exam-ready notes for Java Object-Oriented Programming. They cover every concept, a step-by-step method for each question type, and complete verified solutions for Notebooks 1 to 6.
+Exam-ready notes for Java Object-Oriented Programming. They cover every concept, a step-by-step method for each question type, and complete verified solutions for Notebooks 1 to 6 and Notebook 12.
 
 **How to use these notes**
 1. Read **Part 0** and **Part 1** first. They teach you how to recognise a question type and answer it.
@@ -45,10 +45,10 @@ Exam-ready notes for Java Object-Oriented Programming. They cover every concept,
   - [Notebook 1 - SecureBank](#notebook-1---securebank)
   - [Notebook 2 - Course Management](#notebook-2---course-management)
   - [Notebook 3 - AutoTest Labs](#notebook-3---autotest-labs)
-  - [Notebook 4 Q1 - Product and Electronics](#notebook-4-q1---product-and-electronics)
-  - [Notebook 4 Q2 - Order and PremiumOrder](#notebook-4-q2---order-and-premiumorder)
+  - [Notebook 4 - Product and Electronics](#notebook-4---product-and-electronics)
   - [Notebook 5 - Bank Account](#notebook-5---bank-account)
   - [Notebook 6 - Hospital Patients](#notebook-6---hospital-patients)
+  - [Notebook 12 - Order and PremiumOrder](#notebook-12---order-and-premiumorder)
 - [Part 4 - Practice Question](#part-4---practice-question)
 - [Part 5 - Traps and Compiler Errors](#part-5---traps-and-compiler-errors)
 - [Part 6 - Revision and Viva](#part-6---revision-and-viva)
@@ -104,7 +104,7 @@ Every question in the notebooks is one of **three types**. Spot the type first, 
 |---|---|---|
 | A | long scenario with Parts A-E, skeleton to complete | 1, 3 |
 | B | numbered requirements, "choose modifiers", expected output | 2, 5, 6 |
-| C | overloaded constructors + `super`, billing maths, sample output | 4 (Q1, Q2) |
+| C | overloaded constructors + `super`, billing maths, sample output | 4, 12 |
 
 ## Type A - Design Scenario
 
@@ -1269,7 +1269,7 @@ Total Vehicles Created: 7
 4. `extends SecurityConfiguration` → `cannot inherit from final SecurityConfiguration`
 5. `Vehicle.getVehicleCount()` → a static method, so no object is needed
 
-## Notebook 4 Q1 - Product and Electronics
+## Notebook 4 - Product and Electronics
 
 **Type:** [C - Constructor Overloading with super](#type-c---constructor-overloading-with-super)
 
@@ -1453,196 +1453,6 @@ Remaining Stock: 2
 | TV | 160000 | 10% = 16000 | 144000 | 4→2 |
 
 `30000` prints as `30000.0` because `price` is a `double`.
-
-## Notebook 4 Q2 - Order and PremiumOrder
-
-**Type:** [C - Constructor Overloading with super](#type-c---constructor-overloading-with-super)
-
-**Key points**
-- `Order(id, name)` → `this(id, name, 0)`
-- Final Bill = Amount + Tax (5%) + Delivery − Discount
-- `addPurchase()` adds to the amount and **then** calls `applyFreeDelivery()`
-- Delivery is free when the amount ≥ 5000
-
-<details>
-<summary>Show full solution code</summary>
-
-```java
-class Order {
-    int orderId;
-    String customerName;
-    double orderAmount;
-
-    Order(int orderId, String customerName) {
-        this(orderId, customerName, 0);          // default orderAmount = 0
-    }
-
-    Order(int orderId, String customerName, double orderAmount) {
-        this.orderId = orderId;
-        this.customerName = customerName;
-        this.orderAmount = orderAmount;
-    }
-
-    void showOrder() {
-        System.out.println("Order ID: " + orderId);
-        System.out.println("Customer Name: " + customerName);
-        System.out.println("Order Amount: " + orderAmount);
-    }
-
-    double calculateTax() {
-        return orderAmount * 5 / 100;
-    }
-
-    double getAmountWithTax() {
-        return orderAmount + calculateTax();
-    }
-}
-
-class PremiumOrder extends Order {
-    String membershipType;
-    double discountPercentage;
-    double deliveryCharge;
-
-    PremiumOrder(int orderId, String customerName, String membershipType) {
-        super(orderId, customerName);            // orderAmount = 0
-        this.membershipType = membershipType;
-        this.discountPercentage = 5;
-        this.deliveryCharge = 100;
-    }
-
-    PremiumOrder(int orderId, String customerName, double orderAmount,
-                 String membershipType) {
-        super(orderId, customerName, orderAmount);
-        this.membershipType = membershipType;
-        this.discountPercentage = 5;
-        this.deliveryCharge = 100;
-    }
-
-    PremiumOrder(int orderId, String customerName, double orderAmount,
-                 String membershipType, double discountPercentage,
-                 double deliveryCharge) {
-        super(orderId, customerName, orderAmount);
-        this.membershipType = membershipType;
-        this.discountPercentage = discountPercentage;
-        this.deliveryCharge = deliveryCharge;
-    }
-
-    double calculateDiscount() {
-        return orderAmount * discountPercentage / 100;
-    }
-
-    double calculateFinalBill() {
-        return orderAmount + calculateTax() + deliveryCharge - calculateDiscount();
-    }
-
-    void applyFreeDelivery() {
-        if (orderAmount >= 5000) {
-            deliveryCharge = 0;
-        }
-    }
-
-    void addPurchase(double amount) {
-        orderAmount = orderAmount + amount;
-        applyFreeDelivery();
-    }
-
-    void showPremiumOrder() {
-        showOrder();                             // inherited method
-        System.out.println("Membership Type: " + membershipType);
-        System.out.println("Discount Percentage: " + discountPercentage + "%");
-        System.out.println("Delivery Charge: " + deliveryCharge);
-        System.out.println("Tax: " + calculateTax());
-        System.out.println("Discount Amount: " + calculateDiscount());
-        System.out.println("Final Bill: " + calculateFinalBill());
-    }
-}
-
-public class OrderSystem {
-    static void process(PremiumOrder o) {
-        System.out.println("--- Initial Order ---");
-        o.showOrder();
-        o.applyFreeDelivery();
-        System.out.println("--- Final Order ---");
-        o.showPremiumOrder();
-        System.out.println();
-    }
-
-    public static void main(String[] args) {
-        PremiumOrder o1 = new PremiumOrder(101, "Ravi", "Silver");
-        o1.addPurchase(3000);
-        process(o1);
-
-        PremiumOrder o2 = new PremiumOrder(102, "Ananya", 6000, "Gold");
-        process(o2);
-
-        PremiumOrder o3 = new PremiumOrder(103, "Kiran", 10000, "Platinum", 15, 200);
-        process(o3);
-    }
-}
-```
-
-</details>
-
-<details>
-<summary>Show output</summary>
-
-```text
---- Initial Order ---
-Order ID: 101
-Customer Name: Ravi
-Order Amount: 3000.0
---- Final Order ---
-Order ID: 101
-Customer Name: Ravi
-Order Amount: 3000.0
-Membership Type: Silver
-Discount Percentage: 5.0%
-Delivery Charge: 100.0
-Tax: 150.0
-Discount Amount: 150.0
-Final Bill: 3100.0
-
---- Initial Order ---
-Order ID: 102
-Customer Name: Ananya
-Order Amount: 6000.0
---- Final Order ---
-Order ID: 102
-Customer Name: Ananya
-Order Amount: 6000.0
-Membership Type: Gold
-Discount Percentage: 5.0%
-Delivery Charge: 0.0
-Tax: 300.0
-Discount Amount: 300.0
-Final Bill: 6000.0
-
---- Initial Order ---
-Order ID: 103
-Customer Name: Kiran
-Order Amount: 10000.0
---- Final Order ---
-Order ID: 103
-Customer Name: Kiran
-Order Amount: 10000.0
-Membership Type: Platinum
-Discount Percentage: 15.0%
-Delivery Charge: 0.0
-Tax: 500.0
-Discount Amount: 1500.0
-Final Bill: 9000.0
-```
-
-</details>
-
-**Maths**
-| Order | Amt | Tax | Deliv | Disc | Final |
-|---|---|---|---|---|---|
-| Ravi | 3000 | 150 | 100 | 150 | 3100 |
-| Ananya | 6000 | 300 | 0 | 300 | 6000 |
-| Kiran | 10000 | 500 | 0 | 1500 | 9000 |
-
-Kiran's delivery was 200, but it becomes 0 because 10000 ≥ 5000.
 
 ## Notebook 5 - Bank Account
 
@@ -1900,6 +1710,196 @@ Bill Amount      : 10000.0
 - **protected** for category: subclasses in any package can use it.
 - **default** for room number: only hospital-package classes see it.
 - **static final** for the hospital name: stored once and can never change.
+
+## Notebook 12 - Order and PremiumOrder
+
+**Type:** [C - Constructor Overloading with super](#type-c---constructor-overloading-with-super)
+
+**Key points**
+- `Order(id, name)` → `this(id, name, 0)`
+- Final Bill = Amount + Tax (5%) + Delivery − Discount
+- `addPurchase()` adds to the amount and **then** calls `applyFreeDelivery()`
+- Delivery is free when the amount ≥ 5000
+
+<details>
+<summary>Show full solution code</summary>
+
+```java
+class Order {
+    int orderId;
+    String customerName;
+    double orderAmount;
+
+    Order(int orderId, String customerName) {
+        this(orderId, customerName, 0);          // default orderAmount = 0
+    }
+
+    Order(int orderId, String customerName, double orderAmount) {
+        this.orderId = orderId;
+        this.customerName = customerName;
+        this.orderAmount = orderAmount;
+    }
+
+    void showOrder() {
+        System.out.println("Order ID: " + orderId);
+        System.out.println("Customer Name: " + customerName);
+        System.out.println("Order Amount: " + orderAmount);
+    }
+
+    double calculateTax() {
+        return orderAmount * 5 / 100;
+    }
+
+    double getAmountWithTax() {
+        return orderAmount + calculateTax();
+    }
+}
+
+class PremiumOrder extends Order {
+    String membershipType;
+    double discountPercentage;
+    double deliveryCharge;
+
+    PremiumOrder(int orderId, String customerName, String membershipType) {
+        super(orderId, customerName);            // orderAmount = 0
+        this.membershipType = membershipType;
+        this.discountPercentage = 5;
+        this.deliveryCharge = 100;
+    }
+
+    PremiumOrder(int orderId, String customerName, double orderAmount,
+                 String membershipType) {
+        super(orderId, customerName, orderAmount);
+        this.membershipType = membershipType;
+        this.discountPercentage = 5;
+        this.deliveryCharge = 100;
+    }
+
+    PremiumOrder(int orderId, String customerName, double orderAmount,
+                 String membershipType, double discountPercentage,
+                 double deliveryCharge) {
+        super(orderId, customerName, orderAmount);
+        this.membershipType = membershipType;
+        this.discountPercentage = discountPercentage;
+        this.deliveryCharge = deliveryCharge;
+    }
+
+    double calculateDiscount() {
+        return orderAmount * discountPercentage / 100;
+    }
+
+    double calculateFinalBill() {
+        return orderAmount + calculateTax() + deliveryCharge - calculateDiscount();
+    }
+
+    void applyFreeDelivery() {
+        if (orderAmount >= 5000) {
+            deliveryCharge = 0;
+        }
+    }
+
+    void addPurchase(double amount) {
+        orderAmount = orderAmount + amount;
+        applyFreeDelivery();
+    }
+
+    void showPremiumOrder() {
+        showOrder();                             // inherited method
+        System.out.println("Membership Type: " + membershipType);
+        System.out.println("Discount Percentage: " + discountPercentage + "%");
+        System.out.println("Delivery Charge: " + deliveryCharge);
+        System.out.println("Tax: " + calculateTax());
+        System.out.println("Discount Amount: " + calculateDiscount());
+        System.out.println("Final Bill: " + calculateFinalBill());
+    }
+}
+
+public class OrderSystem {
+    static void process(PremiumOrder o) {
+        System.out.println("--- Initial Order ---");
+        o.showOrder();
+        o.applyFreeDelivery();
+        System.out.println("--- Final Order ---");
+        o.showPremiumOrder();
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        PremiumOrder o1 = new PremiumOrder(101, "Ravi", "Silver");
+        o1.addPurchase(3000);
+        process(o1);
+
+        PremiumOrder o2 = new PremiumOrder(102, "Ananya", 6000, "Gold");
+        process(o2);
+
+        PremiumOrder o3 = new PremiumOrder(103, "Kiran", 10000, "Platinum", 15, 200);
+        process(o3);
+    }
+}
+```
+
+</details>
+
+<details>
+<summary>Show output</summary>
+
+```text
+--- Initial Order ---
+Order ID: 101
+Customer Name: Ravi
+Order Amount: 3000.0
+--- Final Order ---
+Order ID: 101
+Customer Name: Ravi
+Order Amount: 3000.0
+Membership Type: Silver
+Discount Percentage: 5.0%
+Delivery Charge: 100.0
+Tax: 150.0
+Discount Amount: 150.0
+Final Bill: 3100.0
+
+--- Initial Order ---
+Order ID: 102
+Customer Name: Ananya
+Order Amount: 6000.0
+--- Final Order ---
+Order ID: 102
+Customer Name: Ananya
+Order Amount: 6000.0
+Membership Type: Gold
+Discount Percentage: 5.0%
+Delivery Charge: 0.0
+Tax: 300.0
+Discount Amount: 300.0
+Final Bill: 6000.0
+
+--- Initial Order ---
+Order ID: 103
+Customer Name: Kiran
+Order Amount: 10000.0
+--- Final Order ---
+Order ID: 103
+Customer Name: Kiran
+Order Amount: 10000.0
+Membership Type: Platinum
+Discount Percentage: 15.0%
+Delivery Charge: 0.0
+Tax: 500.0
+Discount Amount: 1500.0
+Final Bill: 9000.0
+```
+
+</details>
+
+**Maths**
+| Order | Amt | Tax | Deliv | Disc | Final |
+|---|---|---|---|---|---|
+| Ravi | 3000 | 150 | 100 | 150 | 3100 |
+| Ananya | 6000 | 300 | 0 | 300 | 6000 |
+| Kiran | 10000 | 500 | 0 | 1500 | 9000 |
+
+Kiran's delivery was 200, but it becomes 0 because 10000 ≥ 5000.
 
 ---
 
