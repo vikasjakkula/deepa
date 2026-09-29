@@ -168,17 +168,237 @@ Room.getBookingCount() also counts FamilyRoom objects.
 
 */
 
+/*
+1. Room r = new Room(...);
+   Error because Room is abstract.
+
+2. s.roomNumber = 999;
+   Error because roomNumber is final.
+
+3. Overriding checkIn() inside DeluxeRoom
+   Error because checkIn() is final.
+
+4. class VipRules extends HotelRules { }
+   Error because HotelRules is final.
+
+5. Room.getBookingCount();
+   It works because getBookingCount() is static.
+   Static methods belong to the class.
+*/
+
+/*
+Room reference
+      ↓
+actual object decides calculateBill()
+      ↓
+StandardRoom / DeluxeRoom / SuiteRoom */
+
 public class notebook13 {
-   public static void main(String[] args) {
-      Room r1 = new StandardRoom(102, "Sita", 1, 1500);
-      Room r2 = new DeluxeRoom(206, "Arjun", 2, 3000, false);
-      Room r3 = new SuiteRoom(502, "Meena", 6, 8000, 2000);
-   }
+    public static void main(String[] args) {
+
+        StandardRoom s = new StandardRoom(101, "Ravi", 2, 1500);
+        DeluxeRoom d = new DeluxeRoom(205, "Anita", 3, 3000, true);
+        SuiteRoom st = new SuiteRoom(501, "Kiran", 5, 8000, 2000);
+
+        s.checkIn();
+        d.checkIn();
+        st.checkIn();
+
+        s.updateIdProof("ID123");
+
+        s.displayDetails();
+        d.displayDetails();
+        st.displayDetails();
+
+        System.out.println("Total Bookings: " + Room.getBookingCount());
+    }
 }
 
-class Room {
-   static int id;
-   static String guestName;
-   int numOfNights;
-   double pricePerNight;
+
+abstract class Room {
+
+    private String idProof;
+
+    String guestName;
+
+    final int roomNumber;
+
+    static final String hotelName = "GrandStay";
+
+    protected String category;
+
+    int floorNumber;
+
+    int numOfNights;
+
+    double pricePerNight;
+
+    static int bookingCount;
+
+
+    Room(int roomNumber, String guestName, int numOfNights, double pricePerNight) {
+
+        this.roomNumber = roomNumber;
+        this.guestName = guestName;
+        this.numOfNights = numOfNights;
+        this.pricePerNight = pricePerNight;
+
+        floorNumber = roomNumber / 100;
+
+        bookingCount++;
+    }
+
+
+    final void checkIn() {
+
+        System.out.println("ID Verified");
+        System.out.println("Guest Checked In");
+    }
+
+
+    void updateIdProof(String idProof) {
+
+        this.idProof = idProof;
+    }
+
+
+    abstract double calculateBill();
+
+
+    void displayDetails() {
+
+        System.out.println("Hotel Name: " + hotelName);
+        System.out.println("Room Number: " + roomNumber);
+        System.out.println("Guest Name: " + guestName);
+        System.out.println("Category: " + category);
+        System.out.println("Floor Number: " + floorNumber);
+        System.out.println("Nights: " + numOfNights);
+        System.out.println("Bill: " + calculateBill());
+        System.out.println();
+    }
+
+
+    static int getBookingCount() {
+
+        return bookingCount;
+    }
+}
+
+
+class StandardRoom extends Room {
+
+    StandardRoom(int roomNumber, String guestName, int numOfNights, double pricePerNight) {
+
+        super(roomNumber, guestName, numOfNights, pricePerNight);
+
+        category = "Standard Room";
+    }
+
+
+    @Override
+    double calculateBill() {
+
+        return numOfNights * pricePerNight;
+    }
+}
+
+
+class DeluxeRoom extends Room {
+
+    boolean breakfastIncluded;
+
+
+    DeluxeRoom(int roomNumber, String guestName, int numOfNights,
+               double pricePerNight, boolean breakfastIncluded) {
+
+        super(roomNumber, guestName, numOfNights, pricePerNight);
+
+        this.breakfastIncluded = breakfastIncluded;
+
+        category = "Deluxe Room";
+    }
+
+
+    @Override
+    double calculateBill() {
+
+        double bill = numOfNights * pricePerNight;
+
+        if (breakfastIncluded) {
+            bill = bill + (500 * numOfNights);
+        }
+
+        return bill;
+    }
+}
+
+
+class SuiteRoom extends Room {
+
+    double serviceCharge;
+
+
+    SuiteRoom(int roomNumber, String guestName, int numOfNights,
+              double pricePerNight, double serviceCharge) {
+
+        super(roomNumber, guestName, numOfNights, pricePerNight);
+
+        this.serviceCharge = serviceCharge;
+
+        category = "Suite Room";
+    }
+
+
+    @Override
+    double calculateBill() {
+
+        double bill = (numOfNights * pricePerNight) + serviceCharge;
+
+        if (numOfNights >= 5) {
+            bill = bill * 0.90;
+        }
+
+        return bill;
+    }
+}
+
+
+class FamilyRoom extends Room {
+
+    int extraBeds;
+
+
+    FamilyRoom(int roomNumber, String guestName, int numOfNights,
+               double pricePerNight, int extraBeds) {
+
+        super(roomNumber, guestName, numOfNights, pricePerNight);
+
+        this.extraBeds = extraBeds;
+
+        category = "Family Room";
+    }
+
+
+    @Override
+    double calculateBill() {
+
+        return (numOfNights * pricePerNight)
+                + (800 * extraBeds * numOfNights);
+    }
+}
+
+
+final class HotelRules {
+
+    String checkInTime;
+    String checkOutTime;
+    int maximumGuestsPerRoom;
+
+
+    HotelRules(String checkInTime, String checkOutTime, int maximumGuestsPerRoom) {
+
+        this.checkInTime = checkInTime;
+        this.checkOutTime = checkOutTime;
+        this.maximumGuestsPerRoom = maximumGuestsPerRoom;
+    }
 }
