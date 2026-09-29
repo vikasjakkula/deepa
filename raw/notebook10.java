@@ -88,7 +88,7 @@ abstract class PackageDelivery {
     static String companyName = "SpeedPost Couriers"; // stored only once
     private String senderContact; // confidential
     private String receiverContact; // confidential
-    protected String category;
+    protected String category; // To accessible in this class, its subclasses, and classes in the same package.
     int hubNumber; // default, only same package
     double weight;
 
