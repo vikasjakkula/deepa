@@ -11,10 +11,11 @@ All the cars are performing basic function like accelerate and brake.
 It displays Harrier, Sierra, Tiago, etc
 Harrier is running at the speed of 220km/hr while sierra is racing only at 110km/h, Tiago could barely touch 100km/hr and stops
 
-    String[] name = {"Let us C", "The last Queen", "Wings On Fire", "Palace of Illusions"};
-    String[] author = {"yashwant kanetkar", "Chitra Banerjee Divakaruni", "Sutherland", "Chitra Banerjee Divakaruni"};
-    double[] price = {789.00, 899.00, 1499.34, 648.25};
-    int[] copies = {1000, 900, 800, 700}; */
+Book details:
+    Let us C            - Yashwant Kanetkar          - 789.00  - 1000 copies
+    The Last Queen      - Chitra Banerjee Divakaruni - 899.00  - 900 copies
+    Wings On Fire       - Sutherland                 - 1499.34 - 800 copies
+    Palace of Illusions - Chitra Banerjee Divakaruni - 648.25  - 700 copies */
 
 
 // Solution

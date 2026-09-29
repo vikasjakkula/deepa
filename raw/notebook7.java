@@ -54,16 +54,14 @@ class notebook7 {
         Patient.displayHospitalName();
         System.out.println();
 
-        Patient[] patients = new Patient[2];
-        patients[0] = new InPatient(2001, "Fractured leg", 301, 5, 1800);
-        patients[1] = new OutPatient(2002, "Allergy", 15, 400, 150);
+        Patient p1 = new InPatient(2001, "Fractured leg", 301, 5, 1800);
+        Patient p2 = new OutPatient(2002, "Allergy", 15, 400, 150);
 
-        for (Patient p : patients) {
-            p.displayPatientDetails();
-        }
+        p1.displayPatientDetails();
+        p2.displayPatientDetails();
 
-        patients[1].updateMedicalRecord("Allergy treated");
-        patients[1].displayPatientDetails();
+        p2.updateMedicalRecord("Allergy treated");
+        p2.displayPatientDetails();
     }
 }
 

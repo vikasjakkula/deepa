@@ -342,21 +342,13 @@ a3.calculateInterest();
 
 Observe which implementation executes.
 
-Now create:
+Now for each of a1, a2 and a3, call one by one:
 
-Account[] accounts = new Account[3];
+a1.verifyKYC();
+a1.calculateInterest();
+a1.displayDetails();
 
-accounts[0] = a1;
-accounts[1] = a2;
-accounts[2] = a3;
-
-Use a loop:
-
-for (Account a : accounts) {
-    a.verifyKYC();
-    a.calculateInterest();
-    a.displayDetails();
-}
+(and the same for a2 and a3)
 
 Observe how the same "Account" reference can work with different account objects.
 
@@ -401,7 +393,6 @@ Finally, verify that:
 Account.getAccountCount();
 
 also counts Student Account objects correctly.*/
-
 // Solution
 class notebook {
     public static void main(String[] args) {
@@ -423,19 +414,21 @@ class notebook {
         // Part D: 1. new Account() -> error, Account is abstract  2. s.accountNumber = 50000 -> error, it is final
         // 3. overriding verifyKYC() -> error, it is final  4. extends BankPolicy -> error, final class
         // 5. getAccountCount() is static so we can call it using the class name
-        // Part E
-        Account[] accounts = new Account[3];
-        accounts[0] = new SavingsAccount(20001, "Asha", 40000, 5000);
-        accounts[1] = new CurrentAccount(20002, "Vikram", 25000, 15000);
-        accounts[2] = new FixedDepositAccount(20003, "Neha", 80000, 5);
-        for (Account a : accounts) {
-            a.verifyKYC();
-            a.calculateInterest();
-            a.displayDetails();
-        }
+        // Part E - parent reference, child object
+        Account a1 = new SavingsAccount(20001, "Asha", 40000, 5000);
+        Account a2 = new CurrentAccount(20002, "Vikram", 25000, 15000);
+        Account a3 = new FixedDepositAccount(20003, "Neha", 80000, 5);
+        a1.verifyKYC();
+        a1.calculateInterest();
+        a1.displayDetails();
+        a2.verifyKYC();
+        a2.calculateInterest();
+        a2.displayDetails();
+        a3.verifyKYC();
+        a3.calculateInterest();
+        a3.displayDetails();
         // Challenge
         StudentAccount st = new StudentAccount(30001, "Kiran", 2000, 1000);
-        st.withdraw(1500);
         st.calculateInterest();
         Account.getAccountCount();
     }

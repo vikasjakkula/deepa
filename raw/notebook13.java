@@ -140,12 +140,15 @@ Try each statement separately and explain the result.
 
 Part C - Polymorphism
 
-Store all three rooms in:
+Create:
 
-Room[] rooms = new Room[3];
+Room r1 = new StandardRoom(102, "Sita", 1, 1500);
+Room r2 = new DeluxeRoom(206, "Arjun", 2, 3000, false);
+Room r3 = new SuiteRoom(502, "Meena", 6, 8000, 2000);
 
-Use a loop to call checkIn(), calculateBill() and displayDetails() for every room.
-Observe which calculateBill() runs for each object.
+Call checkIn() and displayDetails() on r1, r2 and r3.
+Observe which calculateBill() runs for each object even though
+all three references are of type Room.
 
 ---
 
@@ -164,3 +167,18 @@ Add FamilyRoom without changing the Room class, and verify that
 Room.getBookingCount() also counts FamilyRoom objects.
 
 */
+
+public class notebook13 {
+   public static void main(String[] args) {
+      Room r1 = new StandardRoom(102, "Sita", 1, 1500);
+      Room r2 = new DeluxeRoom(206, "Arjun", 2, 3000, false);
+      Room r3 = new SuiteRoom(502, "Meena", 6, 8000, 2000);
+   }
+}
+
+class Room {
+   static int id;
+   static String guestName;
+   int numOfNights;
+   double pricePerNight;
+}

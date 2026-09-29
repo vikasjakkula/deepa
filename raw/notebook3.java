@@ -377,21 +377,13 @@ v3.accelerate();
 
 Observe which implementation of "accelerate()" executes.
 
-Then create:
+Then for each of v1, v2 and v3, call one by one:
 
-Vehicle[] vehicles = new Vehicle[3];
+v1.start();
+v1.accelerate();
+v1.displayDetails();
 
-vehicles[0] = v1;
-vehicles[1] = v2;
-vehicles[2] = v3;
-
-Use a loop:
-
-for (Vehicle v : vehicles) {
-    v.start();
-    v.accelerate();
-    v.displayDetails();
-}
+(and the same for v2 and v3)
 
 Observe how the same "Vehicle" reference can work with different types of vehicle objects.
 
@@ -455,9 +447,10 @@ class notebook3 {
         e.accelerate();
         e.accelerate();
         e.accelerate();
-        for (int i = 0; i < 4; i++) {
-            b.accelerate();
-        }
+        b.accelerate();
+        b.accelerate();
+        b.accelerate();
+        b.accelerate();
         p.displayDetails();
         e.displayDetails();
         b.displayDetails();
@@ -468,16 +461,19 @@ class notebook3 {
         // 3. start() cannot be overridden in ElectricCar because it is final
         // 4. extending SecurityConfiguration gives error because it is a final class
         // 5. getVehicleCount() is static, so we can call it with the class name
-        // Part E
-        Vehicle[] vehicles = new Vehicle[3];
-        vehicles[0] = new PetrolCar(201, "Honda", "City");
-        vehicles[1] = new ElectricCar(202, "Tata", "Nexon EV");
-        vehicles[2] = new Bike(203, "Royal Enfield", "Hunter");
-        for (Vehicle v : vehicles) {
-            v.start();
-            v.accelerate();
-            v.displayDetails();
-        }
+        // Part E - parent reference, child object
+        Vehicle v1 = new PetrolCar(201, "Honda", "City");
+        Vehicle v2 = new ElectricCar(202, "Tata", "Nexon EV");
+        Vehicle v3 = new Bike(203, "Royal Enfield", "Hunter");
+        v1.start();
+        v1.accelerate();
+        v1.displayDetails();
+        v2.start();
+        v2.accelerate();
+        v2.displayDetails();
+        v3.start();
+        v3.accelerate();
+        v3.displayDetails();
         // Challenge
         FlyingCar fc = new FlyingCar(301, "AeroMobil", "AM4");
         fc.takeOff(500);
