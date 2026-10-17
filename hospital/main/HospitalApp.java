@@ -1,5 +1,4 @@
 /*
-/*
 Real-Time Java Project: Hospital Management System
 Scenario
 A hospital wants to organize its Java application into different packages so that patient-related operations, doctor-related operations, and billing operations are maintained separately.
@@ -80,21 +79,28 @@ Patient ID: 101
 Consultation Fee: Rs.800.0
 Medicine Fee: Rs.1200.0
 Total Bill: Rs.2000.0
-*/ */
+*/
 
-import hospital.patient;
-import hospital.doctor;
-import hospital.billing;
+package main;
 
-class HospitalApp {
+import patient.Patient;
+import doctor.Doctor;
+import billing.Bill;
+
+public class HospitalApp {
     public static void main(String[] args) {
-        Patient p1 = new Patient();
-        Doctor d1 = new Doctor();
-        Bill b1 = new Bill();
+        Patient p1 = new Patient(101, "Rahul", 35, "Fever");
+        Doctor d1 = new Doctor("D201", "Dr. Priya", "General Medicine");
+        Bill b1 = new Bill(101, 800, 1200);
+
         System.out.println("===== PATIENT DETAILS =====");
         p1.displayPatient();
+        System.out.println();
+
         System.out.println("===== DOCTOR DETAILS =====");
         d1.displayDoctor();
+        System.out.println();
+
         System.out.println("===== BILL DETAILS =====");
         b1.calculateBill();
     }

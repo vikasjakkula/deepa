@@ -1,0 +1,9 @@
+{
+    "java.project.sourcePaths": [
+        "constructor",
+        "encapsulation",
+        "hospital",
+        "raw",
+        "senario"
+    ]
+}
