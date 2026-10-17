@@ -1,0 +1,420 @@
+JAVA OOP ASSESSMENT
+ShopZone – Level 1: Simple
+Problem Statement
+Develop a Java application named ShopZone for managing products, basic inventory, shopping-cart operations, billing, and product-specific behavior.
+The application sells Electronics, Grocery, Clothing, and Medicine. Products share common information, but different products may have different discounts, taxes, delivery charges, and return periods.
+1. Common Product Information
+Every product must contain:
+•
+Product ID
+•
+Product Name
+•
+Brand
+•
+Retail Price
+•
+Available Quantity
+Create a common product type for storing these details.
+Product ID must be supplied when the product is created.
+Product ID should not be changed after creation.
+A generic product without a category should not be directly created.
+2. Common Product Operations
+Every concrete product should provide the following operations:
+displayProductDetails()
+calculateDiscount()
+calculateTax()
+calculateDeliveryCharge()
+getReturnPeriod()
+getDescription()
+getPostPurchaseMessage()
+The same method should produce different results depending on the actual product.
+Example:
+Product product = laptop;
+product.calculateDiscount();
+The caller should not need to determine whether the product is a Laptop, Milk, or Shirt.
+3. Electronic Products
+Create an electronic-product category.
+Include:
+•
+Laptop
+•
+Television
+•
+BluetoothSpeaker
+Electronic products should contain:
+•
+Manufacturer
+•
+Warranty Period
+•
+Power Consumption
+Laptop
+Discount: 10%
+Tax: 18%
+Delivery: ₹500
+Return: 15 days
+Television
+Discount: 8%
+Tax: 18%
+Delivery: ₹800
+Return: 10 days
+Bluetooth Speaker
+Discount: 12%
+Tax: 18%
+Delivery: ₹150
+Return: 7 days
+4. Grocery Products
+Create a grocery-product category.
+Include:
+•
+Milk
+•
+Bread
+•
+Juice
+Grocery products should contain:
+•
+Manufacturing Date
+•
+Expiry Date
+•
+Weight
+Milk
+Discount: 2%
+Tax: 5%
+Delivery: ₹30
+Return: 0 days
+Bread
+Discount: 3%
+Tax: 5%
+Delivery: ₹20
+Return: 0 days
+Juice
+Discount: 5%
+Tax: 12%
+Delivery: ₹40
+Return: 2 days
+5. Clothing Products
+Create a clothing-product category.
+Include:
+•
+Shirt
+•
+Jeans
+Clothing products should contain:
+•
+Size
+•
+Material
+•
+Gender Category
+Shirt
+Discount: 20%
+Tax: 12%
+Delivery: ₹80
+Return: 30 days
+Jeans
+Discount: 15%
+Tax: 12%
+Delivery: ₹100
+Return: 30 days
+6. Medicine Products
+Create a Medicine category.
+A medicine should contain:
+•
+Medicine Name
+•
+Manufacturer
+•
+Expiry Date
+•
+Dosage
+Medicines must provide their own:
+•
+Discount
+•
+Tax
+•
+Delivery charge
+•
+Return period
+•
+Post-purchase message
+7. Bluetooth Capability
+BluetoothSpeaker should provide:
+connectBluetooth()
+disconnectBluetooth()
+The connection operation should display:
+Searching for nearby Bluetooth devices...
+8. Expiry Capability
+Milk, Bread, Juice, and Medicine should provide:
+getExpiryDate()
+checkExpiry()
+The expiry check should display:
+Checking whether the product has expired...
+9. Product Descriptions
+Every product should generate a meaningful description.
+Examples:
+Dell Inspiron | Intel Core i7 | 16GB RAM
+Amul Milk | 1 Litre | Expires: 12-10-2026
+Cotton Shirt | Size L | Men
+The description should be obtained using the common Product reference.
+10. Post-Purchase Messages
+Each product should provide an appropriate message.
+Examples:
+Laptop:Please register your warranty within 30 days.
+Milk:Keep refrigerated and consume before expiry.
+Shirt:Please retain the tags for returns.
+Medicine:Store according to the manufacturer's instructions.
+11. ShoppingCart
+Create a ShoppingCart class with:
+addProduct()
+removeProduct()
+displayCart()
+calculateTotal()
+checkout()
+The requested quantity must not exceed available stock.
+12. Adding Products in Different Ways
+Support the following operations:
+cart.addProduct(laptop);
+cart.addProduct(laptop, 2);
+The first method adds one product.
+The second method adds the specified quantity.
+13. Shopping Cart Billing
+Calculate the final product price using:
+Original Price
+− Discount
++ Tax
++ Delivery Charge
+= Final Price
+Different products should automatically use their own calculations.
+14. Mixed Shopping Cart
+Add:
+•
+1 Laptop
+•
+2 Milk packets
+•
+1 Shirt
+•
+1 Bluetooth Speaker
+•
+1 Medicine
+Display:
+•
+Product
+•
+Original Price
+•
+Quantity
+•
+Discount
+•
+Tax
+•
+Delivery Charge
+•
+Final Price
+•
+Return Period
+•
+Post-Purchase Message
+At the end display:
+Subtotal
+Total Discount
+Total Tax
+Total Delivery Charge
+Grand Total
+15. Demonstrating Polymorphism
+Create a Product[] containing products from different categories.
+Example:
+Product[] products = {
+laptop,
+milk,
+shirt,
+speaker
+};
+Use one loop to process all products.
+16. Same Reference, Different Objects
+Use one Product reference:
+Product currentProduct;
+Assign different objects to it:
+currentProduct = laptop;
+currentProduct.displayProductDetails();
+currentProduct = milk;
+currentProduct.displayProductDetails();
+currentProduct = shirt;
+currentProduct.displayProductDetails();
+Demonstrate that the same method call produces different behavior.
+17. Method Overloading
+Provide overloaded addProduct() methods:
+addProduct(Product product)
+addProduct(Product product, int quantity)
+Demonstrate both calls.
+18. Product Search
+Create basic search operations for:
+•
+Product ID
+•
+Product Name
+Example:
+Search ID: E101
+Search Name: Milk
+19. Product Statistics
+Display:
+•
+Highest priced product
+•
+Lowest priced product
+•
+Average product price
+•
+Total inventory value
+Inventory value:
+Price × Available Quantity
+20. Main Application Requirements
+Create:
+ShoppingApplication
+with:
+public static void main(String[] args)
+Instantiate at least:
+•
+2 Laptops
+•
+1 Television
+•
+1 Bluetooth Speaker
+•
+3 Grocery products
+•
+2 Clothing products
+•
+2 Medicines
+Store them in:
+Product[] products
+21. Complete Demonstration Scenario
+The main application must demonstrate:
+•
+Common Product reference
+•
+Inheritance
+•
+Method overriding
+•
+Method overloading
+•
+Runtime polymorphism
+•
+Product array
+•
+Product search
+•
+Shopping cart
+•
+Billing
+•
+Bluetooth operation
+•
+Expiry checking
+22. Expected Billing Example
+The cart may contain:
+Dell Laptop × 1
+Amul Milk × 2
+Cotton Shirt × 1
+JBL Speaker × 1
+Medicine × 1
+For each product display:
+Original Amount
+Discount
+Tax
+Delivery Charge
+Final Amount
+Finally display:
+Subtotal
+Total Discount
+Total Tax
+Delivery Charges
+Grand Total
+23. Important Design Requirements
+•
+A generic Product should not be directly created.
+•
+Product ID should remain unchanged.
+•
+Common operations should be declared in the common Product type.
+•
+Concrete products should provide their own behavior.
+•
+Product references should support runtime polymorphism.
+•
+Products from different categories should be stored in one Product[].
+•
+ShoppingCart should support overloaded addProduct() methods.
+•
+Product-specific calculations should not be duplicated unnecessarily.
+24. Final Objective
+Show that Java OOP concepts can be used to build a simple online shopping system in which different products share common behavior while performing product-specific operations.
+Expected Output:
+========== SHOPZONE PRODUCTS ==========
+Product ID : E101
+Product Name : Dell Laptop
+Brand : Dell
+Price : 65000.0
+Available Qty: 10
+Laptop - Intel Core i5, 8GB RAM
+Product ID : G101
+Product Name : Amul Milk
+Brand : Amul
+Price : 68.0
+Available Qty: 20
+Milk - 1 Litre
+Product ID : C101
+Product Name : Cotton Shirt
+Brand : Allen Solly
+Price : 1500.0
+Available Qty: 10
+Cotton Shirt - Size L
+========== POLYMORPHISM ==========
+Laptop Discount: Rs.6500.0
+Milk Discount: Rs.1.36
+Shirt Discount: Rs.300.0
+1 x Dell Laptop added to cart.
+2 x Amul Milk added to cart.
+1 x Cotton Shirt added to cart.
+========== SHOPPING CART ==========
+Product : Dell Laptop
+Quantity: 1
+Price : Rs.65000.0
+Product : Amul Milk
+Quantity: 2
+Price : Rs.68.0
+Product : Cotton Shirt
+Quantity: 1
+Price : Rs.1500.0
+========== BILL ==========
+Product : Dell Laptop
+Quantity : 1
+Original Amount: Rs.65000.0
+Discount : Rs.6500.0
+Tax : Rs.10530.0
+Delivery : Rs.500.0
+Final Amount : Rs.69530.0
+Product : Amul Milk
+Quantity : 2
+Original Amount: Rs.136.0
+Discount : Rs.2.72
+Tax : Rs.6.664
+Delivery : Rs.30.0
+Final Amount : Rs.169.944
+Product : Cotton Shirt
+Quantity : 1
+Original Amount: Rs.1500.0
+Discount : Rs.300.0
+Tax : Rs.144.0
+Delivery : Rs.80.0
+Final Amount : Rs.1424.0
+--------------------------------
+Grand Total : Rs.71123.944
+--------------------------------
+Thank you for shopping with ShopZone!
