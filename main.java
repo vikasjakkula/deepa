@@ -1,4 +1,8 @@
 abstract class Products {
+    import java.util.ArrayList;
+    import java.util.List;
+
+    abstract class Products {
     final int productID;
     String productName;
     String brand;
@@ -13,20 +17,49 @@ abstract class Products {
         this.quantity = quantity;
     }
 }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Products)) return false;
+        Products other = (Products) obj;
+        return productID == other.productID;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(productID);
+    }
+
+    @Override
+    public String toString() {
+        return productName + " (" + brand + ") - price: " + retailPrice + ", quantity: " + quantity;
+    }
+}
 
 class Items extends Products {
     Items(int productID, String productName, String brand, double retailPrice, int quantity) {
         super(productID, productName, brand, retailPrice, quantity);
     }
-    @Override
-    public String toString() {
-        return productName;
-    }
 }
 
 public class main {
+    private static void addToCart(List<Products> cart, Products product) {
+        for (Products item : cart) {
+            if (item.equals(product)) {
+                item.quantity += product.quantity;
+                return;
+            }
+        }
+        cart.add(product);
+    }
+
     public static void main(String[] args) {
-        Products p1 = new Items(101, "xyz", "ios", 99.9, 1);
-        System.out.println(p1);
+        List<Products> cart = new ArrayList<>();
+        addToCart(cart, new Items(101, "xyz", "ios", 99.9, 1));
+        addToCart(cart, new Items(101, "xyz", "ios", 99.9, 1));
+
+        for (Products product : cart) {
+            System.out.println(product);
+        }
     }
 }

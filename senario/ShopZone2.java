@@ -76,10 +76,11 @@ Number of products: 4
 Total product value: Rs.71600.00
 */
 
+/*
 import java.util.ArrayList;
 import java.util.List;
 
-public class Test {
+public class ShopZone2 {
     public static void main(String[] args) {
         Manufacturer samsung = new Manufacturer("Samsung", "South Korea");
         Manufacturer apple = new Manufacturer("Apple", "USA");
@@ -303,3 +304,4 @@ class ShopZone {
         System.out.printf("Total product value: Rs.%.2f%n", total);
     }
 }
+*/
