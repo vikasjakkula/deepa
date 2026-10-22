@@ -1,8 +1,7 @@
-abstract class Products {
-    import java.util.ArrayList;
-    import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 
-    abstract class Products {
+abstract class Products {
     final int productID;
     String productName;
     String brand;
@@ -15,7 +14,6 @@ abstract class Products {
         this.brand = brand;
         this.retailPrice = retailPrice;
         this.quantity = quantity;
-    }
 }
     @Override
     public boolean equals(Object obj) {
