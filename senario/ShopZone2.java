@@ -1,122 +1,120 @@
 /*
 JAVA OOP ASSESSMENT
-Level-2: Moderate Complexity  (Sections 1 to 6)
+Level-2: Moderate Complexity  (full question in question2.txt)
 
-ShopZone is an online shopping application that manages different types of products such as
-electronic items, grocery items, and clothing products.
+1. Manufacturer: name and country.
+   Samsung - South Korea, Apple - USA, Nestle - Switzerland, Nike - USA
+2. Product: ID, name, price, quantity, manufacturer.
+   Display details, total value (price x quantity), modify quantity,
+   compare by product ID (same ID = same product), readable format.
+3. Electronic: warranty in months, 10% discount, some have Bluetooth.
+   Laptop: 101, Rs.60000, Qty 1, Samsung, 24 months
+   Bluetooth Headphones: 102, Rs.3000, Qty 2, Apple, 12 months, Bluetooth available
+4. Grocery: expiry date, no discount.
+   Rice: 103, Rs.800, Qty 2, Nestle, Expiry 31-12-2026
+5. Clothing: size, 15% discount.
+   Sports Shoes: 104, Rs.4000, Qty 1, Nike, Size 9
+6. Product collection: add, display, find by ID, search by name (ignore case), statistics.
+7. Shopping cart: add with existing quantity or a given quantity, display cart.
+8. Same product added again -> add to the existing quantity (no new entry).
+9. Discount: Electronic 10%, Grocery 0%, Clothing 15% (on price x quantity).
+10. Bill: product name, amount payable, subtotal, total discount, final amount.
+11. Search by name and by ID.
+12. Product-specific operations: Bluetooth, expiry.
+13. Copy Sports Shoes, change the copy quantity to 3, the original stays 1.
+14. Main: steps 1 to 17.
 
-1. Manufacturer Management
-For every manufacturer, maintain:
-- Manufacturer name
-- Country of origin
-Manufacturers: Samsung - South Korea, Apple - USA, Nestle - Switzerland, Nike - USA
-
-2. Product Management
-Common information for every product:
-- Product ID, Product name, Price, Available quantity, Manufacturer details
-The application should be able to:
-- Create products with the required information.
-- Display complete product details.
-- Calculate the total value of a product (price x quantity).
-- Modify the quantity of a product.
-- Compare products based on their product ID.
-- Display product information in a readable format.
-Two product objects having the same product ID should be treated as the same product.
-
-3. Electronic Products
-Extra: Warranty period in months. 10% discount.
-Some electronic products provide Bluetooth support (display a suitable message).
-Laptop: 101, Rs.60000, Qty 1, Samsung, 24 months
-Bluetooth Headphones: 102, Rs.3000, Qty 2, Apple, 12 months, Bluetooth available
-
-4. Grocery Products
-Extra: Expiry date. No discount. Display the expiry information.
-Rice: 103, Rs.800, Qty 2, Nestle, Expiry 31-12-2026
-
-5. Clothing Products
-Extra: Size. 15% discount.
-Sports Shoes: 104, Rs.4000, Qty 1, Nike, Size 9
-
-6. Product Collection
-- Add Product
-- Display Products (ID, name, price, quantity and extra information)
-- Find Product by ID (show "not found" if it does not exist)
-- Search by Name (should not depend on uppercase / lowercase: Laptop, laptop, LAPTOP)
-- Product Statistics: number of products and total value of all products
-
-Main (steps 1 to 9):
-1. Create the manufacturer information.
-2. Create the four products.
-3. Add all products to the ShopZone product collection.
-4. Display all available products.
-5. Search for the Laptop by name.
-6. Display the calculated value of each product based on its quantity.
-7. Display Bluetooth information for the Bluetooth Headphones.
-8. Display expiry information for Rice.
-9. Display product statistics.
-
-Expected Output (till statistics):
------ AVAILABLE PRODUCTS -----
-101 - Laptop - Rs.60000.0 - Qty: 1 - Warranty: 24 months
-102 - Bluetooth Headphones - Rs.3000.0 - Qty: 2 - Warranty: 12 months
-103 - Rice - Rs.800.0 - Qty: 2 - Expiry: 31-12-2026
-104 - Sports Shoes - Rs.4000.0 - Qty: 1 - Size: 9
-Search result for: Laptop
-101 - Laptop - Rs.60000.0 - Qty: 1 - Warranty: 24 months
------ POLYMORPHISM -----
-Laptop total price = Rs.60000.0
-Bluetooth Headphones total price = Rs.6000.0
-Rice total price = Rs.1600.0
-Sports Shoes total price = Rs.4000.0
------ SPECIAL FEATURES -----
-Bluetooth Headphones supports Bluetooth.
-Rice expiry date: 31-12-2026
------ PRODUCT STATISTICS -----
-Number of products: 4
-Total product value: Rs.71600.00
+Expected bill:
+Laptop : Rs.54000.00
+Bluetooth Headphones : Rs.8100.00
+Rice : Rs.1600.00
+Sports Shoes : Rs.3400.00
+Subtotal : Rs.71600.00
+Discount : Rs.6100.00
+Final Amount : Rs.65500.00
 */
 
-/*
 import java.util.ArrayList;
 import java.util.List;
 
 public class ShopZone2 {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws CloneNotSupportedException {
+        // 1. Manufacturers
         Manufacturer samsung = new Manufacturer("Samsung", "South Korea");
         Manufacturer apple = new Manufacturer("Apple", "USA");
         Manufacturer nestle = new Manufacturer("Nestle", "Switzerland");
         Manufacturer nike = new Manufacturer("Nike", "USA");
 
+        // 2. Products
         Product laptop = new ElectronicProduct(101, "Laptop", 60000, 1, samsung, 24, false);
         Product headphones = new ElectronicProduct(102, "Bluetooth Headphones", 3000, 2, apple, 12, true);
         Product rice = new GroceryProduct(103, "Rice", 800, 2, nestle, "31-12-2026");
-        Product shoes = new ClothingProduct(104, "Sports Shoes", 4000, 1, nike, 9);
+        ClothingProduct shoes = new ClothingProduct(104, "Sports Shoes", 4000, 1, nike, 9);
 
-        ShopZone shop = new ShopZone();
+        // 3. Add to the collection
+        ProductStore shop = new ProductStore();
         shop.addProduct(laptop);
         shop.addProduct(headphones);
         shop.addProduct(rice);
         shop.addProduct(shoes);
 
+        // 4. Display all
         System.out.println("----- AVAILABLE PRODUCTS -----");
         shop.displayProducts();
 
+        // 5. Search by name
         shop.searchByName("Laptop");
 
+        // 6. Value of each product (same method, different objects)
         System.out.println("----- POLYMORPHISM -----");
-        System.out.println(laptop.name + " total price = Rs." + laptop.getTotalValue());
-        System.out.println(headphones.name + " total price = Rs." + headphones.getTotalValue());
-        System.out.println(rice.name + " total price = Rs." + rice.getTotalValue());
-        System.out.println(shoes.name + " total price = Rs." + shoes.getTotalValue());
+        for (Product p : shop.products) {
+            System.out.println(p.name + " total price = Rs." + p.getTotalValue());
+        }
 
+        // 7, 8. Special features
         System.out.println("----- SPECIAL FEATURES -----");
         ElectronicProduct hp = (ElectronicProduct) headphones;
         hp.showBluetooth();
         GroceryProduct r = (GroceryProduct) rice;
         r.showExpiry();
 
+        // 9. Statistics
         System.out.println("----- PRODUCT STATISTICS -----");
         shop.showStatistics();
+
+        // Find by ID
+        System.out.println("----- FIND BY ID -----");
+        System.out.println(shop.findProduct(103));
+        shop.findProduct(999);
+
+        // 10, 11, 12. Cart
+        System.out.println("----- ADDING TO CART -----");
+        ShoppingCart cart = new ShoppingCart();
+        cart.addProduct(laptop);
+        cart.addProduct(headphones);
+        cart.addProduct(rice);
+        cart.addProduct(shoes);
+        cart.addProduct(headphones, 1);
+
+        // 13. Display cart
+        System.out.println("----- SHOPPING CART -----");
+        cart.displayCart();
+
+        // 14. Bill
+        System.out.println("----- BILL DETAILS -----");
+        cart.generateBill();
+
+        // 15, 16, 17. Copy
+        System.out.println("----- COPYING PRODUCT -----");
+        ClothingProduct shoesCopy = (ClothingProduct) shoes.clone();
+        System.out.println("Original : " + shoes);
+        System.out.println("Copy     : " + shoesCopy);
+        shoesCopy.setQuantity(3);
+        System.out.println("After changing copy quantity:");
+        System.out.println("Original : " + shoes);
+        System.out.println("Copy     : " + shoesCopy);
+        System.out.println("Same product? " + shoes.equals(shoesCopy));
+        System.out.println("Same object?  " + (shoes == shoesCopy));
     }
 }
 
@@ -135,7 +133,7 @@ class Manufacturer {
     }
 }
 
-abstract class Product {
+abstract class Product implements Cloneable {
     final int productId;
     String name;
     double price;
@@ -162,10 +160,6 @@ abstract class Product {
 
     abstract double getDiscountPercent();
 
-    double getDiscount() {
-        return price * quantity * getDiscountPercent() / 100;
-    }
-
     void displayDetails() {
         System.out.println("Product ID: " + productId);
         System.out.println("Name: " + name);
@@ -180,10 +174,24 @@ abstract class Product {
         return productId + " - " + name + " - Rs." + price + " - Qty: " + quantity + " - " + getExtraInfo();
     }
 
+    // Same product ID = same product
     @Override
     public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Product)) return false;
         Product p = (Product) obj;
         return this.productId == p.productId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(productId);
+    }
+
+    // Shallow copy is enough: quantity is a primitive, so the copy gets its own value
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }
 
@@ -261,8 +269,9 @@ class ClothingProduct extends Product {
     }
 }
 
-class ShopZone {
-    List<Product> products = new ArrayList<Product>();
+// The ShopZone product collection
+class ProductStore {
+    List<Product> products = new ArrayList<>();
 
     void addProduct(Product p) {
         products.add(p);
@@ -304,4 +313,73 @@ class ShopZone {
         System.out.printf("Total product value: Rs.%.2f%n", total);
     }
 }
-*/
+
+// Product quantity = stock, CartItem quantity = how many the customer buys
+class CartItem {
+    Product product;
+    int quantity;
+
+    CartItem(Product product, int quantity) {
+        this.product = product;
+        this.quantity = quantity;
+    }
+
+    double getAmount() {
+        return product.price * quantity;
+    }
+
+    double getDiscount() {
+        return getAmount() * product.getDiscountPercent() / 100;
+    }
+
+    double getPayable() {
+        return getAmount() - getDiscount();
+    }
+
+    @Override
+    public String toString() {
+        return product.productId + " - " + product.name + " - Rs." + product.price
+                + " - Qty: " + quantity + " - " + product.getExtraInfo();
+    }
+}
+
+class ShoppingCart {
+    List<CartItem> items = new ArrayList<>();
+
+    // Add using the product's existing quantity
+    void addProduct(Product p) {
+        addProduct(p, p.quantity);
+    }
+
+    // Add a particular quantity, merge if already present
+    void addProduct(Product p, int quantity) {
+        for (CartItem item : items) {
+            if (item.product.equals(p)) {
+                item.quantity = item.quantity + quantity;
+                System.out.println(p.name + " quantity merged in cart.");
+                return;
+            }
+        }
+        items.add(new CartItem(p, quantity));
+        System.out.println(p.name + " added to cart.");
+    }
+
+    void displayCart() {
+        for (CartItem item : items) {
+            System.out.println(item);
+        }
+    }
+
+    void generateBill() {
+        double subtotal = 0;
+        double totalDiscount = 0;
+        for (CartItem item : items) {
+            System.out.printf("%s : Rs.%.2f%n", item.product.name, item.getPayable());
+            subtotal = subtotal + item.getAmount();
+            totalDiscount = totalDiscount + item.getDiscount();
+        }
+        System.out.printf("Subtotal : Rs.%.2f%n", subtotal);
+        System.out.printf("Discount : Rs.%.2f%n", totalDiscount);
+        System.out.printf("Final Amount : Rs.%.2f%n", subtotal - totalDiscount);
+    }
+}
