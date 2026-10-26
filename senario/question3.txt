@@ -1,0 +1,236 @@
+JAVA OOP LAB - PRACTICE PAPER (same pattern as FDS Lab Internal-1)
+Problem Statement: FitFuel – Health Supplement Store Management System
+
+1. Supplement Management
+FitFuel is a health supplement store that sells protein powders, vitamins, energy bars, and herbal teas.
+Develop a Java application using object-oriented programming concepts to manage supplement details,
+stock availability, customer orders, discounts, and billing.
+Create a parent class named Supplement containing the following fields:
+supplementId
+supplementName
+pricePerUnit
+availableUnits
+brandName
+Include a constructor to initialize these fields and methods to display supplement details,
+calculate the total stock value, and compare two supplement objects based on their supplement IDs.
+The fields must not be directly accessible from outside the class. Provide suitable methods to read
+the values and to update the available units.
+
+2. Supplement Categories
+Create the following subclasses by extending the Supplement class.
+Subclass        Additional Fields              Discount
+ProteinPowder   flavour, weightInKg            10%
+Vitamin         vitaminType, tabletsPerBottle  5%
+EnergyBar       calories, glutenFree           8%
+HerbalTea       herbName, caffeineFree         15%
+Each subclass must contain a constructor to initialize its additional fields along with the
+inherited fields. Override the payable amount calculation method to apply the appropriate discount.
+
+3. Brand and Supplement Details
+Associate each supplement with a brand using the brandName field.
+Use suitable brand names and additional attribute values for the four supplements.
+For example, Whey Protein may be associated with a sports nutrition brand, while Green Tea may be
+associated with a herbal brand.
+Display the brand name and all category-specific attributes whenever supplement details are displayed.
+
+4. Initial Supplement Inventory
+Create and initialize the following supplement objects. Use suitable values for their additional fields.
+Supplement         ID    Price per unit   Available Stock
+Whey Protein       901   ₹2,000           40 units
+Multivitamin       902   ₹500             60 units
+Oats Energy Bar    903   ₹50              200 units
+Green Tea          904   ₹300             50 units
+Display the supplement ID, name, price per unit, available stock, brand name,
+category-specific attributes, and discount percentage.
+
+5. Supplement Collection and Inventory Statistics
+Store all supplement objects in a collection, such as an ArrayList<Supplement>.
+Implement methods to:
+Display all available supplement details.
+Calculate the total number of supplement types.
+Calculate the total available stock in units.
+Calculate the total inventory value using the price per unit and available stock.
+The initial inventory statistics must be:
+Total supplement types: 4
+Total stock: 350 units
+Total stock value: ₹1,35,000
+Calculate the total stock value by multiplying the price per unit by the available units for each
+supplement and adding the results.
+
+6. Supplement Searching and Comparison
+Implement the following operations:
+Search for a supplement using its ID.
+Search for a supplement by name without considering uppercase and lowercase differences.
+Display an appropriate message when the requested supplement is not found.
+Compare two supplement objects based on their supplement IDs.
+Display whether the two objects represent the same supplement.
+Implement suitable methods in the Supplement class to perform the comparison.
+
+7. Customer Order Cart Management
+Create an order cart to maintain the supplements selected by a customer.
+Each cart entry must contain the supplement details and the ordered quantity in units.
+The application must support the following operations:
+Add a supplement to the order cart.
+Increase the quantity when the same supplement is ordered again.
+Display the supplement names and quantities in the cart.
+Calculate the subtotal, discount, and final amount for each entry.
+Calculate the total quantity ordered and the final bill.
+Repeated orders for the same supplement must be merged into a single cart entry.
+
+8. Order Quantity Validation and Confirmation
+Use if-else statements to validate every order request.
+The application must reject an order when:
+The requested quantity is zero or negative.
+The requested quantity exceeds the available stock.
+The requested supplement does not exist in the inventory.
+A rejected order must not change the cart or available stock.
+Update the stock only after a valid order has been confirmed.
+Exception handling is not required.
+
+9. Repeated Supplement Orders
+Demonstrate repeated ordering of the same supplement.
+When a customer first orders 2 units of Whey Protein and subsequently orders 1 more unit,
+the application must merge both orders into one cart entry.
+The final cart entry must contain:
+Supplement name: Whey Protein
+Total quantity: 3 units
+Price per unit: ₹2,000
+Discount: 10%
+Calculate the bill using the combined quantity rather than treating the two orders as separate entries.
+
+10. Supplement Price and Discount Calculation
+Calculate the bill using the following formulas:
+Subtotal = Price per unit × Quantity ordered
+Discount amount = Subtotal × Discount percentage / 100
+Final amount = Subtotal − Discount amount
+Apply the discount according to the supplement category.
+Category        Discount
+ProteinPowder   10%
+Vitamin         5%
+EnergyBar       8%
+HerbalTea       15%
+For example, ordering 3 units of Whey Protein must produce the following calculation:
+Subtotal = ₹2,000 × 3 = ₹6,000
+Discount = ₹6,000 × 10 / 100 = ₹600
+Final amount = ₹6,000 − ₹600 = ₹5,400
+Display the subtotal, discount percentage, discount amount, and final amount for every cart entry.
+
+11. Billable Interface Implementation
+Create an interface named Billable containing a method to calculate the payable amount.
+The Supplement parent class must implement the Billable interface.
+Each subclass must override the calculation method to apply its respective discount.
+Use suitable return types and method parameters to calculate the payable amount based on the
+ordered quantity.
+
+12. Inheritance, Method Overriding, and Runtime Polymorphism
+Demonstrate inheritance by deriving ProteinPowder, Vitamin, EnergyBar, and HerbalTea from the
+Supplement class.
+Override the payable amount calculation method in every subclass.
+Store subclass objects in parent-class references and invoke the calculation method.
+The appropriate subclass implementation must execute at runtime.
+Display the calculated payable amounts to demonstrate runtime polymorphism.
+
+13. Customer Ordering Scenario
+Assume a customer places the following order:
+2 units of Whey Protein.
+3 units of Multivitamin.
+10 units of Oats Energy Bar.
+4 units of Green Tea.
+An additional 1 unit of Whey Protein.
+Add these orders to the cart in the given sequence.
+The application must merge the repeated Whey Protein order into one entry.
+After processing all orders, display the cart, total quantity ordered, final bill, and updated
+stock after order confirmation.
+
+14. Expected Order Cart
+The order cart must contain four entries after all valid orders have been added.
+Supplement         Quantity    Price per unit
+Whey Protein       3 units     ₹2,000
+Multivitamin       3 units     ₹500
+Oats Energy Bar    10 units    ₹50
+Green Tea          4 units     ₹300
+Total              20 units
+Display the supplement name, ordered quantity, price per unit, subtotal, discount, and final amount
+for every cart entry.
+
+15. Expected Customer Bill
+Generate the final bill using the ordered quantities and category-specific discounts.
+Supplement         Quantity    Subtotal    Discount    Final Amount
+Whey Protein       3 units     ₹6,000      ₹600        ₹5,400
+Multivitamin       3 units     ₹1,500      ₹75         ₹1,425
+Oats Energy Bar    10 units    ₹500        ₹40         ₹460
+Green Tea          4 units     ₹1,200      ₹180        ₹1,020
+Total              20 units    ₹9,200      ₹895        ₹8,305
+Display the subtotal, discount amount, and final payable amount for each supplement.
+At the end, display the total subtotal, total discount, and final amount payable by the customer.
+
+16. Updated Supplement Stock After Ordering
+After confirming the order, update the available stock.
+Supplement         Initial Stock   Ordered Quantity   Remaining Stock
+Whey Protein       40 units        3 units            37 units
+Multivitamin       60 units        3 units            57 units
+Oats Energy Bar    200 units       10 units           190 units
+Green Tea          50 units        4 units            46 units
+Total              350 units       20 units           330 units
+Display the updated stock after the order is confirmed.
+Calculate the remaining total stock and the total inventory value using the updated quantities.
+Updated total stock value: ₹1,25,800
+
+17. Insufficient Stock and Invalid Order Validation
+After completing the above order, only 37 units of Whey Protein remain available.
+Attempt to order 40 units of Whey Protein. The application must reject the order and display:
+Order rejected: Insufficient stock available.
+The available Whey Protein stock must remain 37 units, and the rejected order must not be added
+to the cart.
+Also test the following invalid operations:
+Attempt to order zero units.
+Attempt to order a negative quantity.
+Attempt to order more than the available stock.
+Search for a supplement ID or name that does not exist.
+Display appropriate messages and verify that invalid orders do not modify the cart or available stock.
+
+18. Supplement-Specific Attributes and Polymorphism
+Display the additional attributes of each supplement category.
+Protein powders: flavour and weight in kg.
+Vitamins: vitamin type and tablets per bottle.
+Energy bars: calories and gluten-free status.
+Herbal teas: herb name and caffeine-free status.
+Use overridden display methods or suitable category-specific methods wherever appropriate.
+Demonstrate polymorphism by accessing different supplement objects through Supplement references
+and invoking their overridden methods.
+
+19. Independent Supplement Object Copying
+Create an independent copy of the Whey Protein object to demonstrate object copying.
+Initially, the copied object must contain the same supplement details as the original.
+Change the available stock in the copied object to a different value and display both objects.
+For example:
+Original Whey Protein stock: 37 units
+Copied Whey Protein stock initially: 37 units
+Modified copied Whey Protein stock: 100 units
+Verify that modifying the copied object does not change the original object's available stock.
+The copied object must not be added to the actual supplement collection, order cart,
+stock calculations, or final bill.
+
+20. Main Application and Student Deliverables
+Implement the main() method to perform the following operations in sequence:
+Create and initialize all supplement objects.
+Store the supplement objects in a collection and display their details.
+Display initial inventory statistics.
+Search for supplements by ID and name.
+Compare supplement objects using their IDs.
+Create the order cart and process the specified orders.
+Merge repeated orders for the same supplement.
+Validate order quantities and stock availability.
+Calculate discounts and payable amounts using runtime polymorphism.
+Display the order cart and final bill.
+Confirm the order and update the stock.
+Display updated stock statistics.
+Test invalid orders and verify that stock remains unchanged.
+Demonstrate independent supplement object copying.
+
+Student Deliverables: Develop a complete Java program using classes, objects, constructors,
+encapsulation, inheritance, interfaces, method overriding, runtime polymorphism, collections,
+searching, object comparison, order cart management, validation, stock updates, discount
+calculations, billing, and independent object copying. Include all required classes and the
+main() method. Display clear output for each operation and ensure that all expected totals and
+validation rules are satisfied.

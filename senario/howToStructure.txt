@@ -1,0 +1,188 @@
+HOW TO STRUCTURE ANY DEEPA MA'AM OOP LAB QUESTION
+(works for FDS Lab Internal-1 papers: EcoHarvest, PawPal, ParcelPro, SolarWise, TuneLab, RecycleRight
+ and for practice paper question3.txt - FitFuel)
+
+======================================================================
+STEP 1: READ IN 5 MINUTES (mark these with a pen)
+======================================================================
+Part 1   -> PARENT class name + 5 fields          (write them down)
+Part 2   -> TABLE = 4 CHILD classes, 2 extra fields each, discount %
+Part 4   -> the 4 OBJECTS you will create in main (id, price, stock)
+Part 5   -> STORE class (ArrayList) + statistics methods
+Part 6   -> search by id, search by name, equals()
+Part 7-9 -> CART + CartItem, merge repeated order
+Part 8   -> if-else validation (qty <= 0, qty > stock, product null)
+Part 10  -> the formula (subtotal, discount, final)
+Part 11  -> INTERFACE name + method name
+Part 12  -> polymorphism loop
+Part 13-17 -> main() scenario + expected numbers (use them to check your output)
+Part 18  -> displayDetails() overridden in each child
+Part 19  -> clone()
+Part 20  -> main() order (just follow it top to bottom)
+
+Every paper has the SAME 20 parts. Only the names change.
+EcoHarvest: FarmProduce / Grain, Vegetable, Fruit, Spice / Sellable
+FitFuel:    Supplement  / ProteinPowder, Vitamin, EnergyBar, HerbalTea / Billable
+
+======================================================================
+STEP 2: WHERE EACH OOP CONCEPT GOES
+======================================================================
+ENCAPSULATION  -> fields are private, read with getters, change stock only with setter
+ABSTRACTION    -> parent class is abstract (generic product should not be created)
+                  interface hides HOW the payable amount is calculated
+INHERITANCE    -> 4 children extend the parent, constructor calls super(...)
+POLYMORPHISM   -> Supplement s = new Vitamin(...); s.calculatePayable(3);
+                  the child's method runs at runtime (overriding)
+HAS-A          -> CartItem HAS-A Supplement, OrderCart HAS-A list of CartItems,
+                  Store HAS-A list of Supplements
+INTERFACE      -> parent implements Billable, children override its method
+Object class   -> toString(), equals(), hashCode(), clone()
+
+======================================================================
+STEP 3: NAMING RULES
+======================================================================
+Class      -> PascalCase noun          Supplement, OrderCart, CartItem
+Field      -> camelCase noun           supplementId, pricePerUnit, availableUnits
+Method     -> camelCase verb           calculatePayable(), addToCart(), searchById()
+boolean    -> is / has                 isGlutenFree(), isCaffeineFree()
+getter     -> get + FieldName          getSupplementName()
+setter     -> set + FieldName          setAvailableUnits(int units)
+Interface  -> adjective (-able)        Billable, Sellable
+Constant   -> UPPER_CASE               MAX_STOCK
+
+INPUT / OUTPUT parameters:
+calculatePayable(int quantity)  -> input: quantity    output: double (final amount)
+searchById(int id)              -> input: id          output: Supplement (or null)
+addToCart(Supplement s, int qty)-> input: item, qty   output: boolean (added or rejected)
+getTotalValue()                 -> input: nothing     output: double
+
+======================================================================
+STEP 4: SKELETON FOR FitFuel (question3.txt) - ONLY NAMES, YOU WRITE THE BODIES
+======================================================================
+
+class Main
+    main(String[] args)
+
+interface Billable
+    double calculatePayable(int quantity);
+
+abstract class Supplement implements Billable, Cloneable
+    private int supplementId;
+    private String supplementName;
+    private double pricePerUnit;
+    private int availableUnits;
+    private String brandName;
+
+    Supplement(5 params)
+    getters for all 5
+    void setAvailableUnits(int units)
+    abstract double getDiscountPercent();
+    double getStockValue()                     -> price * units
+    double getSubtotal(int quantity)           -> price * quantity
+    void displayDetails()                      -> prints common fields
+    public String toString()
+    public boolean equals(Object obj)          -> same supplementId
+    public int hashCode()
+    protected Object clone()
+
+class ProteinPowder extends Supplement        (flavour, weightInKg)       10%
+class Vitamin extends Supplement              (vitaminType, tabletsPerBottle) 5%
+class EnergyBar extends Supplement            (calories, glutenFree)      8%
+class HerbalTea extends Supplement            (herbName, caffeineFree)    15%
+    each child has:
+    constructor(5 parent params + 2 own params) -> super(...) first line
+    double getDiscountPercent()
+    public double calculatePayable(int quantity)  -> subtotal - discount
+    void displayDetails()                          -> super.displayDetails() + own 2 fields
+
+class CartItem                                 HAS-A Supplement
+    Supplement supplement;
+    int quantity;
+    double getSubtotal()
+    double getDiscountAmount()
+    double getFinalAmount()                    -> supplement.calculatePayable(quantity)
+
+class OrderCart                                HAS-A List<CartItem>
+    List<CartItem> items
+    boolean addToCart(Supplement s, int quantity)   -> validation + merge
+    void displayCart()
+    int getTotalQuantity()
+    void printBill()
+    void confirmOrder()                        -> reduce stock using setter
+
+class SupplementStore                          HAS-A List<Supplement>
+    List<Supplement> supplements
+    void addSupplement(Supplement s)
+    void displayAll()
+    int getTotalTypes()
+    int getTotalStock()
+    double getTotalValue()
+    Supplement searchById(int id)
+    Supplement searchByName(String name)       -> equalsIgnoreCase
+
+======================================================================
+STEP 5: VALIDATION IN addToCart (Part 8) - always this order
+======================================================================
+if (s == null)                         -> "Order rejected: Supplement not found."
+else if (quantity <= 0)                -> "Order rejected: Invalid quantity."
+else if (alreadyInCart + quantity > s.getAvailableUnits())
+                                       -> "Order rejected: Insufficient stock available."
+else                                   -> merge if same id exists, else add new CartItem
+Stock is reduced ONLY in confirmOrder(), never in addToCart().
+
+======================================================================
+STEP 6: main() FLOW (Part 20 - copy this order)
+======================================================================
+1.  Create 4 objects using PARENT reference:  Supplement whey = new ProteinPowder(...);
+2.  store.addSupplement(...) x4, store.displayAll()
+3.  types, total stock, total value                 -> check 4, 350, 135000
+4.  searchById(902), searchByName("green tea"), search 999 -> not found
+5.  whey.equals(copy or other)                      -> same / different
+6.  cart.addToCart x5 (Whey 2, Multi 3, Bar 10, Tea 4, Whey 1) -> Whey merged to 3
+7.  polymorphism loop: for (Supplement s : list) s.calculatePayable(2)
+8.  cart.displayCart(), cart.printBill()            -> check 9200, 895, 8305
+9.  cart.confirmOrder(), display updated stock      -> check 330, 125800
+10. invalid tests: 40 Whey, 0, -5, id 999          -> stock still 37
+11. display each child's details (overridden displayDetails)
+12. Supplement copy = (Supplement) whey.clone(); copy.setAvailableUnits(100);
+    print both -> original 37, copy 100
+
+======================================================================
+STEP 7: EXAM STRATEGY FOR MARKS
+======================================================================
+- First 10 min: write class names + fields + constructors (compiles = marks).
+- Then parent methods, then children, then Store, then Cart, then main.
+- Compile after every class. A program that runs with 15 parts beats
+  a program with 20 parts that does not compile.
+- Print section headings in main: ----- INVENTORY -----, ----- BILL ----- etc.
+- Match the expected numbers from the question. If they match, you are right.
+- If stuck on clone: implements Cloneable + return super.clone(); main needs
+  "throws CloneNotSupportedException".
+
+======================================================================
+STEP 8: VIVA - pick-a-number questions (answer in one line each)
+======================================================================
+1.  Why is the parent abstract?          -> a generic Supplement should not be created.
+2.  Why private fields?                  -> encapsulation; stock changes only through setter.
+3.  Why super(...) first line?           -> parent part of object is built first.
+4.  Overloading vs overriding?           -> same name diff params (compile time) /
+                                            same signature in child (runtime).
+5.  Where is runtime polymorphism?       -> Supplement s = new Vitamin(); s.calculatePayable().
+6.  Why an interface?                    -> a contract: every Billable must calculate payable.
+7.  Abstract class vs interface?         -> abstract can have fields + constructors;
+                                            interface only declares behaviour, multiple allowed.
+8.  Why override equals?                 -> default compares addresses; we compare IDs.
+9.  Why hashCode with equals?            -> equal objects must give the same hash (HashMap/HashSet).
+10. What does toString do?               -> readable print instead of ClassName@hashcode.
+11. Shallow vs deep copy?                -> shallow copies references; deep copies inner objects too.
+12. Why is shallow clone enough here?    -> fields are primitives and Strings (immutable).
+13. Why CartItem class?                  -> stock and ordered quantity must stay separate.
+14. Why reduce stock in confirmOrder?    -> rejected / unconfirmed orders must not change stock.
+15. Has-a vs is-a?                       -> CartItem has-a Supplement / Vitamin is-a Supplement.
+16. Why ArrayList not array?             -> size grows; add/remove easily.
+17. What if child does not override abstract method? -> child must be abstract, else compile error.
+18. Can we create object of abstract class? -> No, only through child.
+19. What is upcasting / downcasting?     -> child to parent reference (auto) /
+                                            parent back to child ((Vitamin) s).
+20. What is final?                       -> final variable cannot change, final method cannot be
+                                            overridden, final class cannot be extended.
