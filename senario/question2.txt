@@ -128,7 +128,7 @@ Display:
 The total value should consider the quantity available for every product. 
 7. Shopping Cart 
 ShopZone should provide a shopping cart where customers can add products they wish to 
-purchase. 
+purchase.
 The cart should allow a product to be added: 
 • Using its existing quantity 
 • By specifying a particular quantity 
